@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebOS v0.1</title>
+    <style>
+        /* === OS STYLING === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* === DESKTOP === */
+        .desktop {
+            height: 100vh;
+            padding-top: 40px;
+            padding-bottom: 60px;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(100, 100, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 100, 100, 0.1) 0%, transparent 20%);
+        }
+
+        /* === TASKBAR === */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(30, 30, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 20px;
+            transition: transform 0.2s;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .taskbar-apps {
+            display: flex;
+            gap: 10px;
+        }
+
+        .taskbar-app {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .taskbar-app:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .clock {
+            margin-left: auto;
+            color: #4cc9f0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        /* === DESKTOP ICONS === */
+        .desktop-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 80px);
+            gap: 20px;
+            padding: 20px;
+            max-width: 600px;
+        }
+
+        .icon {
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            width: 80px;
+        }
+
+        .icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .icon img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .icon span {
+            display: block;
+            font-size: 12px;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === WINDOWS === */
+        .window {
+            position: absolute;
+            background: rgba(40, 40, 60, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .window.active {
+            display: block;
+        }
+
+        .window-header {
+            background: rgba(30, 30, 46, 0.9);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: move;
+        }
+
+        .window-title {
+            font-weight: bold;
+            color: #4cc9f0;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .window-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .close { background: #ff5f57; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #28ca42; }
+
+        .window-content {
+            padding: 20px;
+            height: calc(100% - 50px);
+            overflow: auto;
+        }
+
+        /* === FILE EXPLORER === */
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* === BROWSER === */
+        .browser-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .url-bar {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .go-btn {
+            background: #4cc9f0;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .browser-frame {
+            width: 100%;
+            height: 400px;
+            background: white;
+            border-radius: 8px;
+            border: none;
+        }
+
+        /* === START MENU === */
+        .start-menu {
+            position: fixed;
+            bottom: 70px;
+            left: 20px;
+            width: 300px;
+            background: rgba(40, 40, 60, 0.98);
+            backdrop-filter: blur(30px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .start-menu.active {
+            display: block;
+        }
+
+        .start-menu-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            color: white;
+        }
+
+        .start-menu-items {
+            padding: 10px;
+        }
+
+        .start-item {
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background 0.3s;
+        }
+
+        .start-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* === NOTIFICATION === */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(40, 40, 60, 0.95);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 5px solid #4cc9f0;
+            display: none;
+            animation: slideIn 0.5s ease;
+            z-index: 2000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* === UTILITIES === */
+        .hidden { display: none; }
+        .drag-over { opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <!-- DESKTOP -->
+    <div class="desktop" id="desktop">
+        <div class="desktop-icons">
+            <div class="icon" onclick="openApp('files')">
+                <span>📁</span>
+                <span>Files</span>
+            </div>
+            <div class="icon" onclick="openApp('browser')">
+                <span>🌐</span>
+                <span>Web Browser</span>
+            </div>
+            <div class="icon" onclick="openApp('terminal')">
+                <span>💻</span>
+                <span>Terminal</span>
+            </div>
+            <div class="icon" onclick="openApp('settings')">
+                <span>⚙️</span>
+                <span>Settings</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOWS -->
+    <div class="window" id="files-window" style="top: 100px; left: 100px;">
+        <div class="window-header">
+            <div class="window-title">📁 File Explorer</div>
+            <div class="window-controls">
+                <div class="window-btn minimize" onclick="minimizeWindow('files')"></div>
+                <div class="window-btn maximize" onclick="maximizeWindow('files')"></div>
+                <div class="window-btn close" onclick="closeWindow('files')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="files-grid" id="files-grid">
+                <!-- Files will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="browser-window" style="top: 150px; left: 200px;">
+        <div class="window-header">
+            <div class="window-title">🌐 Web Browser</div>
+            <div class="window-controls">
+                <div class="window-btn minimize" onclick="minimizeWindow('browser')"></div>
+                <div class="window-btn maximize" onclick="maximizeWindow('browser')"></div>
+                <div class="window-btn close" onclick="closeWindow('browser')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="browser-bar">
+                <input type="text" class="url-bar" id="url-bar" value="https://en.wikipedia.org/wiki/WebOS" placeholder="Enter URL...">
+                <button class="go-btn" onclick="goToUrl()">Go</button>
+            </div>
+            <iframe class="browser-frame" id="browser-frame" src="https://en.wikipedia.org/wiki/WebOS"></iframe>
+        </div>
+    </div>
+
+    <div class="window" id="terminal-window" style="top: 200px; left: 300px;">
+        <div class="window-header">
+            <div class="window-title">💻 Terminal</div>
+            <div class="window-controls">
+                <div class="window-btn minimize" onclick="minimizeWindow('terminal')"></div>
+                <div class="window-btn maximize" onclick="maximizeWindow('terminal')"></div>
+                <div class="window-btn close" onclick="closeWindow('terminal')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div id="terminal-output">
+                <p>Welcome to WebOS Terminal v0.1</p>
+                <p>Type 'help' for commands</p>
+                <br>
+                <p>> <span id="command-line"></span></p>
+            </div>
+            <input type="text" id="terminal-input" placeholder="Type command...">
+        </div>
+    </div>
+
+    <!-- TASKBAR -->
+    <div class="taskbar">
+        <button class="start-btn" onclick="toggleStartMenu()">START</button>
+        <div class="taskbar-apps">
+            <div class="taskbar-app" onclick="openApp('files')">📁 Files</div>
+            <div class="taskbar-app" onclick="openApp('browser')">🌐 Browser</div>
+            <div class="taskbar-app" onclick="openApp('terminal')">💻 Terminal</div>
+        </div>
+        <div class="clock" id="clock">--:--:--</div>
+    </div>
+
+    <!-- START MENU -->
+    <div class="start-menu" id="start-menu">
+        <div class="start-menu-header">
+            <h3>WebOS v0.1</h3>
+            <p>Welcome to your custom OS!</p>
+        </div>
+        <div class="start-menu-items">
+            <div class="start-item" onclick="openApp('files')">
+                <span>📁</span>
+                <div>
+                    <strong>File Explorer</strong>
+                    <p>Manage your files</p>
+                </div>
+            </div>
+            <div class="start-item" onclick="openApp('browser')">
+                <span>🌐</span>
+                <div>
+                    <strong>Web Browser</strong>
+                    <p>Browse the internet</p>
+                </div>
+            </div>
+            <div class="start-item" onclick="showNotification('System', 'Settings will be available soon!')">
+                <span>⚙️</span>
+                <div>
+                    <strong>Settings</strong>
+                    <p>System configuration</p>
+                </div>
+            </div>
+            <div class="start-item" onclick="shutdown()">
+                <span>⏻</span>
+                <div>
+                    <strong>Shutdown</strong>
+                    <p>Turn off the system</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+        <strong id="notif-title">Notification</strong>
+        <p id="notif-message">This is a notification</p>
+    </div>
+
+    <script>
+        // === OS CORE ===
+        const WebOS = {
+            version: '0.1.0',
+            apps: {
+                files: { open: false, minimized: false },
+                browser: { open: false, minimized: false },
+                terminal: { open: false, minimized: false }
+            },
+            files: [
+                { name: 'Documents', type: 'folder', icon: '📁' },
+                { name: 'Pictures', type: 'folder', icon: '🖼️' },
+                { name: 'Music', type: 'folder', icon: '🎵' },
+                { name: 'notes.txt', type: 'file', icon: '📝' },
+                { name: 'todo.html', type: 'file', icon: '📄' },
+                { name: 'screenshot.png', type: 'file', icon: '🖼️' }
+            ]
+        };
+
+        // === CLOCK ===
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString();
+            const date = now.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            document.getElementById('clock').textContent = `${date} ${time}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // === APP MANAGEMENT ===
+        function openApp(appName) {
+            const window = document.getElementById(`${appName}-window`);
+            WebOS.apps[appName].open = true;
+            WebOS.apps[appName].minimized = false;
+            
+            window.classList.add('active');
+            
+            // Bring to front
+            document.querySelectorAll('.window').forEach(w => {
+                w.style.zIndex = '100';
+            });
+            window.style.zIndex = '200';
+            
+            closeStartMenu();
+            
+            // Special initialization
+            if (appName === 'files') initFileExplorer();
+            if (appName === 'terminal') initTerminal();
+            
+            showNotification('WebOS', `${appName.charAt(0).toUpperCase() + appName.slice(1)} launched`);
+        }
+
+        function closeWindow(appName) {
+            const window = document.getElementById(`${appName}-window`);
+            window.classList.remove('active');
+            WebOS.apps[appName].open = false;
+        }
+
+        function minimizeWindow(appName) {
+            const window = document.getElementById(`${appName}-window`);
+            window.classList.remove('active');
+            WebOS.apps[appName].minimized = true;
+        }
+
+        function maximizeWindow(appName) {
+            const window = document.getElementById(`${appName}-window`);
+            window.style.width = '90vw';
+            window.style.height = '80vh';
+            window.style.top = '50px';
+            window.style.left = '50px';
+        }
+
+        // === FILE EXPLORER ===
+        function initFileExplorer() {
+            const grid = document.getElementById('files-grid');
+            grid.innerHTML = '';
+            
+            WebOS.files.forEach(file => {
+                const fileEl = document.createElement('div');
+                fileEl.className = 'file-item';
+                fileEl.innerHTML = `
+                    <div style="font-size: 32px; margin-bottom: 10px;">${file.icon}</div>
+                    <div>${file.name}</div>
+                    <small>${file.type}</small>
+                `;
+                fileEl.onclick = () => {
+                    showNotification('File Explorer', `Opening ${file.name}`);
+                };
+                grid.appendChild(fileEl);
+            });
+        }
+
+        // === BROWSER ===
+        function goToUrl() {
+            const url = document.getElementById('url-bar').value;
+            const frame = document.getElementById('browser-frame');
+            
+            // Basic URL validation
+            let finalUrl = url;
+            if (!url.startsWith('http')) {
+                finalUrl = 'https://' + url;
+                document.getElementById('url-bar').value = finalUrl;
+            }
+            
+            try {
+                frame.src = finalUrl;
+            } catch (e) {
+                showNotification('Browser Error', 'Cannot navigate to that URL');
+            }
+        }
+
+        // === TERMINAL ===
+        function initTerminal() {
+            const input = document.getElementById('terminal-input');
+            input.focus();
+            
+            input.onkeypress = (e) => {
+                if (e.key === 'Enter') {
+                    const command = input.value.trim();
+                    input.value = '';
+                    processCommand(command);
+                }
+            };
+        }
+
+        function processCommand(command) {
+            const output = document.getElementById('terminal-output');
+            const newLine = document.createElement('p');
+            newLine.innerHTML = `> ${command}`;
+            output.appendChild(newLine);
+            
+            // Commands
+            switch(command.toLowerCase()) {
+                case 'help':
+                    output.innerHTML += `
+                        <p>Available commands:</p>
+                        <p>• help - Show this help</p>
+                        <p>• date - Show current date</p>
+                        <p>• clear - Clear terminal</p>
+                        <p>• about - About WebOS</p>
+                        <p>• reboot - Restart the OS (fake)</p>
+                    `;
+                    break;
+                case 'date':
+                    output.innerHTML += `<p>${new Date().toString()}</p>`;
+                    break;
+                case 'clear':
+                    output.innerHTML = '';
+                    break;
+                case 'about':
+                    output.innerHTML += `<p>WebOS v${WebOS.version} - A fun web-based OS simulator</p>`;
+                    break;
+                case 'reboot':
+                    output.innerHTML += `<p>Rebooting... Just kidding! 😄</p>`;
+                    showNotification('System', 'Pretend reboot initiated!');
+                    break;
+                default:
+                    output.innerHTML += `<p>Command not found: ${command}</p>`;
+            }
+            
+            // Scroll to bottom
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // === START MENU ===
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.classList.toggle('active');
+        }
+
+        function closeStartMenu() {
+            document.getElementById('start-menu').classList.remove('active');
+        }
+
+        // === NOTIFICATIONS ===
+        function showNotification(title, message) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notif-title').textContent = title;
+            document.getElementById('notif-message').textContent = message;
+            
+            notif.style.display = 'block';
+            
+            setTimeout(() => {
+                notif.style.display = 'none';
+            }, 3000);
+        }
+
+        // === SHUTDOWN ===
+        function shutdown() {
+            showNotification('System', 'Shutting down WebOS...');
+            document.body.innerHTML = `
+                <div style="
+                    background: #1a1a2e;
+                    height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-family: monospace;
+                    flex-direction: column;
+                ">
+                    <h1 style="color: #4cc9f0;">WebOS</h1>
+                    <p>System is now safe to turn off</p>
+                    <p><button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4cc9f0; border: none; border-radius: 5px; color: white; cursor: pointer;">Restart</button></p>
+                </div>
+            `;
+        }
+
+        // === DRAG & DROP (Basic) ===
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize
+            initFileExplorer();
+            showNotification('WebOS', 'System ready! Welcome to your custom OS.');
+            
+            // Close start menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.start-menu') && !e.target.closest('.start-btn')) {
+                    closeStartMenu();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
