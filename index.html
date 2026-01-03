@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebOS v1.0 - Complete Working Version</title>
+    <title>WebOS v2.0 - Enhanced Complete Version</title>
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -507,6 +507,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .winamp-titlebar {
@@ -1041,6 +1042,194 @@
             to { width: 0%; }
         }
 
+        /* ===== ENHANCED FEATURES ===== */
+        .external-url-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .external-url-content {
+            background: rgba(30, 30, 50, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .external-url-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .external-url-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+        }
+
+        .external-url-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .external-url-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .external-url-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-permission {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            z-index: 1000;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .compatibility-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .compatibility-good {
+            background: rgba(40, 200, 40, 0.2);
+            color: #28c828;
+            border: 1px solid rgba(40, 200, 40, 0.3);
+        }
+
+        .compatibility-warning {
+            background: rgba(255, 200, 40, 0.2);
+            color: #ffc828;
+            border: 1px solid rgba(255, 200, 40, 0.3);
+        }
+
+        .compatibility-bad {
+            background: rgba(255, 70, 70, 0.2);
+            color: #ff4646;
+            border: 1px solid rgba(255, 70, 70, 0.3);
+        }
+
+        .proxy-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        .proxy-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .local-files {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .local-file {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .local-file:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .quick-launch {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: rgba(20, 20, 35, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 5000;
+        }
+
+        .quick-launch-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-launch-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+
         /* ===== UTILITY CLASSES ===== */
         .hidden {
             display: none !important;
@@ -1129,6 +1318,10 @@
                 width: 100%;
                 border: none;
             }
+            
+            .quick-launch {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -1168,7 +1361,7 @@
         <div class="window-header" onmousedown="startDrag(event, 'files')">
             <div class="window-title">
                 <span>📁</span>
-                File Explorer
+                File Explorer <span class="compatibility-badge compatibility-good">Enhanced</span>
             </div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('files')"></div>
@@ -1179,20 +1372,23 @@
         <div class="window-content">
             <div class="file-explorer">
                 <div class="explorer-toolbar">
-                    <button class="toolbar-btn" onclick="fileExplorer.goBack()">
+                    <button class="toolbar-btn" onclick="enhancedFileExplorer.goBack()">
                         ← Back
                     </button>
-                    <button class="toolbar-btn" onclick="fileExplorer.goForward()">
+                    <button class="toolbar-btn" onclick="enhancedFileExplorer.goForward()">
                         → Forward
                     </button>
-                    <button class="toolbar-btn" onclick="fileExplorer.goUp()">
+                    <button class="toolbar-btn" onclick="enhancedFileExplorer.goUp()">
                         ↑ Up
                     </button>
-                    <button class="toolbar-btn" onclick="fileExplorer.refresh()">
+                    <button class="toolbar-btn" onclick="enhancedFileExplorer.refresh()">
                         ↻ Refresh
                     </button>
-                    <button class="toolbar-btn" onclick="fileExplorer.createFolder()">
+                    <button class="toolbar-btn" onclick="enhancedFileExplorer.createFolder()">
                         + New Folder
+                    </button>
+                    <button class="toolbar-btn" onclick="enhancedFileExplorer.createNewFile()">
+                        + New File
                     </button>
                 </div>
                 <div class="explorer-path" id="current-path">
@@ -1210,7 +1406,7 @@
         <div class="window-header" onmousedown="startDrag(event, 'browser')">
             <div class="window-title">
                 <span>🌐</span>
-                Web Browser
+                Web Browser <span class="compatibility-badge compatibility-good">Enhanced</span>
             </div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('browser')"></div>
@@ -1222,17 +1418,17 @@
             <div class="browser-container">
                 <div class="browser-toolbar">
                     <div class="nav-buttons">
-                        <button class="nav-btn" onclick="browser.goBack()" id="back-btn" title="Back">←</button>
-                        <button class="nav-btn" onclick="browser.goForward()" id="forward-btn" title="Forward">→</button>
-                        <button class="nav-btn" onclick="browser.refresh()" title="Refresh">↻</button>
-                        <button class="nav-btn" onclick="browser.goHome()" title="Home">⌂</button>
+                        <button class="nav-btn" onclick="enhancedBrowser.goBack()" id="back-btn" title="Back">←</button>
+                        <button class="nav-btn" onclick="enhancedBrowser.goForward()" id="forward-btn" title="Forward">→</button>
+                        <button class="nav-btn" onclick="enhancedBrowser.refresh()" title="Refresh">↻</button>
+                        <button class="nav-btn" onclick="enhancedBrowser.goHome()" title="Home">⌂</button>
                     </div>
                     <div class="url-container">
                         <input type="text" class="url-bar" id="url-bar" 
                                value="https://lite.duckduckgo.com/lite/"
                                placeholder="Enter URL or search..."
-                               onkeydown="if(event.key === 'Enter') browser.goToUrl()">
-                        <button class="go-btn" onclick="browser.goToUrl()">Go</button>
+                               onkeydown="if(event.key === 'Enter') enhancedBrowser.goToUrl()">
+                        <button class="go-btn" onclick="enhancedBrowser.goToUrl()">Go</button>
                     </div>
                 </div>
                 <div class="browser-frame-container">
@@ -1243,9 +1439,9 @@
                 </div>
                 <div style="margin-top: 15px; font-size: 12px; color: #888; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     💡 <strong>Tip:</strong> For best compatibility, use "lite" versions of sites. Try: 
-                    <button onclick="browser.loadUrl('https://lite.duckduckgo.com/lite/')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">DuckDuckGo Lite</button>
-                    <button onclick="browser.loadUrl('https://en.m.wikipedia.org')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">Wikipedia Mobile</button>
-                    <button onclick="browser.loadUrl('https://old.reddit.com')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">Old Reddit</button>
+                    <button onclick="enhancedBrowser.loadUrl('https://lite.duckduckgo.com/lite/')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">DuckDuckGo Lite</button>
+                    <button onclick="enhancedBrowser.loadUrl('https://en.m.wikipedia.org')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">Wikipedia Mobile</button>
+                    <button onclick="enhancedBrowser.loadUrl('https://old.reddit.com')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">Old Reddit</button>
                 </div>
             </div>
         </div>
@@ -1256,7 +1452,7 @@
         <div class="window-header" onmousedown="startDrag(event, 'winamp')">
             <div class="window-title">
                 <span>🎵</span>
-                Winamp 2.95
+                Winamp 2.95 <span class="compatibility-badge compatibility-good">Enhanced</span>
             </div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('winamp')"></div>
@@ -1277,16 +1473,16 @@
                         </div>
                         
                         <div class="winamp-buttons">
-                            <div class="winamp-button" onclick="winampPlayer.previousTrack()" title="Previous Track">◀◀</div>
-                            <div class="winamp-button" onclick="winampPlayer.togglePlay()" id="play-btn" title="Play/Pause">▶</div>
-                            <div class="winamp-button" onclick="winampPlayer.stop()" title="Stop">■</div>
-                            <div class="winamp-button" onclick="winampPlayer.nextTrack()" title="Next Track">▶▶</div>
-                            <div class="winamp-button" onclick="winampPlayer.toggleMute()" id="mute-btn" title="Mute">🔊</div>
+                            <div class="winamp-button" onclick="enhancedWinamp.previousTrack()" title="Previous Track">◀◀</div>
+                            <div class="winamp-button" onclick="enhancedWinamp.togglePlay()" id="play-btn" title="Play/Pause">▶</div>
+                            <div class="winamp-button" onclick="enhancedWinamp.stop()" title="Stop">■</div>
+                            <div class="winamp-button" onclick="enhancedWinamp.nextTrack()" title="Next Track">▶▶</div>
+                            <div class="winamp-button" onclick="enhancedWinamp.toggleMute()" id="mute-btn" title="Mute">🔊</div>
                         </div>
                         
                         <div class="playback-controls">
                             <div class="time-display" id="current-time">00:00</div>
-                            <div class="progress-bar" onclick="winampPlayer.seek(event)" id="progress-bar">
+                            <div class="progress-bar" onclick="enhancedWinamp.seek(event)" id="progress-bar">
                                 <div class="progress-fill" id="progress-fill"></div>
                             </div>
                             <div class="time-display" id="total-time">00:00</div>
@@ -1295,7 +1491,7 @@
                         <div class="volume-controls">
                             <span style="font-size: 12px;">Vol:</span>
                             <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" 
-                                   oninput="winampPlayer.setVolume(this.value)">
+                                   oninput="enhancedWinamp.setVolume(this.value)">
                             <span style="font-size: 12px; min-width: 30px;" id="volume-text">70%</span>
                         </div>
                         
@@ -1317,7 +1513,7 @@
         <div class="window-header" onmousedown="startDrag(event, 'terminal')">
             <div class="window-title">
                 <span>💻</span>
-                Terminal
+                Terminal <span class="compatibility-badge compatibility-good">Enhanced</span>
             </div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('terminal')"></div>
@@ -1328,7 +1524,7 @@
         <div class="window-content">
             <div class="terminal-container">
                 <div class="terminal-header">
-                    <div class="terminal-title">WebOS Terminal v1.0</div>
+                    <div class="terminal-title">WebOS Terminal v2.0</div>
                     <div class="terminal-controls">
                         <button class="terminal-btn" onclick="terminal.clear()">Clear</button>
                         <button class="terminal-btn" onclick="terminal.copyOutput()">Copy</button>
@@ -1364,8 +1560,8 @@
                 🔊
                 <div class="tray-badge" id="volume-badge">70</div>
             </div>
-            <div class="tray-icon" onclick="showNotification('Battery', 'Powered by Web Technologies')" title="Battery">
-                🔋
+            <div class="tray-icon" onclick="showNotification('Storage', 'Local storage is active')" title="Storage">
+                💾
             </div>
             <div class="clock" id="clock">--:--:--</div>
         </div>
@@ -1378,7 +1574,7 @@
                 <div class="user-avatar">W</div>
                 <div class="user-details">
                     <h3>WebOS User</h3>
-                    <p>Administrator</p>
+                    <p>v2.0 Enhanced</p>
                 </div>
             </div>
         </div>
@@ -1421,11 +1617,11 @@
                 <div class="menu-section">
                     <h4>Documents</h4>
                     <div class="menu-items">
-                        <div class="menu-item" onclick="showNotification('Notepad', 'Opening Notepad...')">
+                        <div class="menu-item" onclick="enhancedFileExplorer.showLocalFiles(); openApp('files');">
                             <div class="menu-item-icon">📝</div>
                             <div class="menu-item-text">
-                                <h5>Notes.txt</h5>
-                                <p>Last modified: Today</p>
+                                <h5>Local Files</h5>
+                                <p>Edit and save files</p>
                             </div>
                         </div>
                         <div class="menu-item" onclick="showNotification('Projects', 'Opening Projects folder...')">
@@ -1461,14 +1657,21 @@
                             <div class="menu-item-icon">🔄</div>
                             <div class="menu-item-text">
                                 <h5>Check for Updates</h5>
-                                <p>WebOS v1.0</p>
+                                <p>WebOS v2.0</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="power-options">
-                    <div class="power-btn" onclick="shutdown()">
+                    <div class="menu-item" onclick="storageManager.exportOS()">
+                        <div class="menu-item-icon">💾</div>
+                        <div class="menu-item-text">
+                            <h5>Export Backup</h5>
+                            <p>Save your WebOS state</p>
+                        </div>
+                    </div>
+                    <div class="power-btn" onclick="enhancedShutdown()">
                         <span>⏻</span>
                         Shut Down
                     </div>
@@ -1488,7 +1691,7 @@
     <script>
         // ===== GLOBAL STATE =====
         const WebOS = {
-            version: '1.0.0',
+            version: '2.0.0',
             apps: {},
             settings: {
                 theme: 'dark',
@@ -1653,13 +1856,13 @@
             initializeApp(appName) {
                 switch(appName) {
                     case 'files':
-                        fileExplorer.loadFiles();
+                        enhancedFileExplorer.loadFiles();
                         break;
                     case 'browser':
-                        browser.initialize();
+                        enhancedBrowser.initialize();
                         break;
                     case 'winamp':
-                        winampPlayer.initialize();
+                        enhancedWinamp.initialize();
                         break;
                     case 'terminal':
                         terminal.initialize();
@@ -1684,7 +1887,7 @@
                 // Clean up
                 switch(appName) {
                     case 'winamp':
-                        winampPlayer.stop();
+                        enhancedWinamp.stop();
                         break;
                 }
                 
@@ -1810,8 +2013,8 @@
 
         const windowManager = new WindowManager();
 
-        // ===== FILE EXPLORER =====
-        class FileExplorer {
+        // ===== ENHANCED FILE EXPLORER =====
+        class EnhancedFileExplorer {
             constructor() {
                 this.currentPath = 'C:\\Users\\WebOS\\Desktop';
                 this.history = [];
@@ -1828,6 +2031,42 @@
                     { name: 'budget.xlsx', type: 'file', size: '256 KB', icon: '📈', modified: '2024-01-11' },
                     { name: 'readme.md', type: 'file', size: '2.1 KB', icon: '📋', modified: '2024-01-10' }
                 ];
+                this.localFiles = [];
+                this.loadLocalFiles();
+            }
+
+            loadLocalFiles() {
+                try {
+                    const saved = localStorage.getItem('webos_local_files');
+                    this.localFiles = saved ? JSON.parse(saved) : [
+                        { 
+                            name: 'Welcome.txt', 
+                            content: 'Welcome to WebOS v2.0!\n\nThis is your local storage. Files saved here will persist between sessions.\n\nYou can edit this file and it will be saved automatically.', 
+                            type: 'text', 
+                            size: '1.2 KB',
+                            created: new Date().toISOString(),
+                            modified: new Date().toISOString()
+                        },
+                        { 
+                            name: 'Notes.md', 
+                            content: '# My WebOS Notes\n\n## Features:\n- Enhanced browser with external URL handling\n- Winamp with audio permission fixes\n- Local file storage\n- Auto-save settings\n- Quick launch toolbar\n\n## Tips:\n1. Right-click for context menus\n2. Drag windows to move\n3. Use Quick Launch for fast access', 
+                            type: 'markdown', 
+                            size: '0.8 KB',
+                            created: new Date().toISOString(),
+                            modified: new Date().toISOString()
+                        }
+                    ];
+                } catch (e) {
+                    this.localFiles = [];
+                }
+            }
+
+            saveLocalFiles() {
+                try {
+                    localStorage.setItem('webos_local_files', JSON.stringify(this.localFiles));
+                } catch (e) {
+                    console.error('Failed to save local files:', e);
+                }
             }
 
             loadFiles() {
@@ -1839,6 +2078,45 @@
                 grid.innerHTML = '';
                 pathElement.textContent = this.currentPath;
                 
+                // Add local files section
+                const localSection = document.createElement('div');
+                localSection.style.gridColumn = '1 / -1';
+                localSection.style.marginBottom = '20px';
+                localSection.innerHTML = `
+                    <h4 style="color: #a0a0ff; margin-bottom: 15px; display: flex; align-items: center;">
+                        📁 Local Files (Saved)
+                        <button onclick="enhancedFileExplorer.createNewFile()" 
+                                style="margin-left: auto; background: rgba(102,126,234,0.2); 
+                                       border: 1px solid rgba(102,126,234,0.4); color: #667eea; 
+                                       padding: 5px 15px; border-radius: 6px; font-size: 12px; cursor: pointer;">
+                            + New File
+                        </button>
+                    </h4>
+                `;
+                grid.appendChild(localSection);
+                
+                // Display local files
+                this.localFiles.forEach((file, index) => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file-item';
+                    fileElement.innerHTML = `
+                        <div class="file-icon">${this.getFileIcon(file.type)}</div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${file.size}</div>
+                    `;
+                    
+                    fileElement.onclick = () => this.openLocalFile(index);
+                    grid.appendChild(fileElement);
+                });
+                
+                // Add separator
+                const separator = document.createElement('div');
+                separator.style.gridColumn = '1 / -1';
+                separator.style.margin = '20px 0';
+                separator.style.borderTop = '1px solid rgba(255,255,255,0.1)';
+                grid.appendChild(separator);
+                
+                // Display regular files
                 this.files.forEach(file => {
                     const fileElement = document.createElement('div');
                     fileElement.className = 'file-item';
@@ -1877,23 +2155,125 @@
             openFile(file) {
                 showNotification('File Explorer', `Opening: ${file.name}`, 2000, 'info');
                 
-                // Simulate file opening based on type
                 switch(file.name.split('.').pop()) {
                     case 'txt':
                     case 'md':
-                        showNotification('Notepad', `Opening ${file.name} in text editor...`, 3000, 'info');
+                        this.createLocalFile(file.name, `Content of ${file.name}\n\nThis is a simulated file.`, 'text');
                         break;
                     case 'html':
-                        browser.loadUrl(`file://${this.currentPath}/${file.name}`);
+                        enhancedBrowser.loadUrl(`data:text/html,<h1>${file.name}</h1><p>Simulated HTML file</p>`);
                         windowManager.openApp('browser');
-                        break;
-                    case 'png':
-                    case 'jpg':
-                        showNotification('Photos', `Opening image: ${file.name}`, 3000, 'info');
                         break;
                     default:
                         showNotification('File Explorer', `No application configured for .${file.name.split('.').pop()} files`, 3000, 'warning');
                 }
+            }
+
+            openLocalFile(index) {
+                const file = this.localFiles[index];
+                
+                const editor = `
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                                background: rgba(0,0,0,0.9); z-index: 100000; 
+                                display: flex; justify-content: center; align-items: center;">
+                        <div style="background: rgba(30,30,50,0.95); border-radius: 15px; 
+                                    padding: 30px; width: 80%; max-width: 800px; max-height: 80vh;
+                                    display: flex; flex-direction: column;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h3 style="color: #a0a0ff;">${file.name}</h3>
+                                <button onclick="this.closest('div').remove()" 
+                                        style="background: #ff4757; color: white; border: none; 
+                                               width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">×</button>
+                            </div>
+                            <textarea id="file-editor-${index}" 
+                                      style="flex: 1; background: rgba(0,0,0,0.5); color: white; 
+                                             border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+                                             padding: 15px; font-family: 'JetBrains Mono', monospace; 
+                                             font-size: 14px; resize: none;"
+                                      rows="20">${file.content}</textarea>
+                            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                <button onclick="enhancedFileExplorer.saveLocalFile(${index})" 
+                                        style="flex: 1; background: linear-gradient(135deg, #667eea, #764ba2); 
+                                               border: none; padding: 12px; border-radius: 8px; color: white; cursor: pointer;">
+                                    💾 Save
+                                </button>
+                                <button onclick="this.closest('div').remove()" 
+                                        style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+                                               padding: 12px 24px; border-radius: 8px; color: white; cursor: pointer;">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', editor);
+            }
+
+            saveLocalFile(index) {
+                const editor = document.getElementById(`file-editor-${index}`);
+                if (editor) {
+                    this.localFiles[index].content = editor.value;
+                    this.localFiles[index].modified = new Date().toISOString();
+                    this.localFiles[index].size = this.formatSize(editor.value.length);
+                    this.saveLocalFiles();
+                    
+                    showNotification('File Explorer', `Saved: ${this.localFiles[index].name}`, 2000, 'success');
+                    
+                    // Close editor
+                    editor.closest('div').remove();
+                }
+            }
+
+            createNewFile() {
+                const name = prompt('Enter file name (with extension):', 'newfile.txt');
+                if (name) {
+                    const type = this.getFileType(name);
+                    const content = `# ${name}\n\nCreated on ${new Date().toLocaleString()}\n\nStart typing here...`;
+                    this.createLocalFile(name, content, type);
+                    this.loadFiles();
+                }
+            }
+
+            createLocalFile(name, content, type = 'text') {
+                this.localFiles.push({
+                    name,
+                    content,
+                    type,
+                    size: this.formatSize(content.length),
+                    created: new Date().toISOString(),
+                    modified: new Date().toISOString()
+                });
+                
+                this.saveLocalFiles();
+                showNotification('File Explorer', `Created: ${name}`, 2000, 'success');
+            }
+
+            formatSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+                return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            }
+
+            getFileIcon(type) {
+                const icons = {
+                    'text': '📝',
+                    'markdown': '📄',
+                    'html': '🌐',
+                    'json': '📋'
+                };
+                return icons[type] || '📄';
+            }
+
+            getFileType(filename) {
+                const ext = filename.split('.').pop().toLowerCase();
+                const types = {
+                    'txt': 'text',
+                    'md': 'markdown',
+                    'html': 'html',
+                    'json': 'json'
+                };
+                return types[ext] || 'text';
             }
 
             goBack() {
@@ -1940,31 +2320,52 @@
                     showNotification('File Explorer', `Created folder: ${folderName}`, 2000, 'success');
                 }
             }
+
+            showLocalFiles() {
+                this.loadFiles();
+            }
         }
 
-        const fileExplorer = new FileExplorer();
+        const enhancedFileExplorer = new EnhancedFileExplorer();
 
-        // ===== WEB BROWSER =====
-        class WebBrowser {
+        // ===== ENHANCED WEB BROWSER =====
+        class EnhancedBrowser {
             constructor() {
                 this.history = [];
                 this.currentIndex = -1;
                 this.homePage = 'https://lite.duckduckgo.com/lite/';
                 this.isLoading = false;
+                this.compatibleSites = [
+                    'lite.duckduckgo.com',
+                    'en.m.wikipedia.org',
+                    'old.reddit.com',
+                    'textise.iitty',
+                    'wiby.me',
+                    'mbasic.facebook.com',
+                    'mobile.twitter.com'
+                ];
+                
+                this.iframeBlockedSites = [
+                    'youtube.com',
+                    'google.com',
+                    'facebook.com',
+                    'twitter.com',
+                    'deepseek.com',
+                    'netflix.com',
+                    'instagram.com'
+                ];
             }
 
             initialize() {
                 const frame = document.getElementById('browser-frame');
                 const urlBar = document.getElementById('url-bar');
-                const backBtn = document.getElementById('back-btn');
-                const forwardBtn = document.getElementById('forward-btn');
                 
                 if (!frame) return;
                 
                 frame.onload = () => {
                     this.isLoading = false;
                     this.updateNavButtons();
-                    showNotification('Browser', 'Page loaded', 1500, 'browser');
+                    showNotification('Browser', 'Page loaded successfully', 1500, 'browser');
                 };
                 
                 frame.onerror = () => {
@@ -1980,7 +2381,7 @@
                 this.updateNavButtons();
             }
 
-            loadUrl(url) {
+            async loadUrl(url) {
                 const frame = document.getElementById('browser-frame');
                 const urlBar = document.getElementById('url-bar');
                 
@@ -1990,7 +2391,6 @@
                 
                 // Add protocol if missing
                 if (!finalUrl.match(/^https?:\/\//)) {
-                    // Check if it's a search query
                     if (finalUrl.includes(' ') || !finalUrl.includes('.')) {
                         finalUrl = `https://lite.duckduckgo.com/lite/?q=${encodeURIComponent(finalUrl)}`;
                     } else {
@@ -1998,19 +2398,110 @@
                     }
                 }
                 
-                this.isLoading = true;
-                frame.src = finalUrl;
                 urlBar.value = finalUrl;
                 
-                // Add to history
-                if (this.history[this.currentIndex] !== finalUrl) {
-                    this.history = this.history.slice(0, this.currentIndex + 1);
-                    this.history.push(finalUrl);
-                    this.currentIndex++;
+                // Check if site is compatible
+                if (this.isSiteCompatible(finalUrl)) {
+                    // Show loading indicator
+                    this.showLoadingIndicator();
+                    
+                    try {
+                        frame.src = finalUrl;
+                        this.isLoading = true;
+                        
+                        // Add to history
+                        if (this.history[this.currentIndex] !== finalUrl) {
+                            this.history = this.history.slice(0, this.currentIndex + 1);
+                            this.history.push(finalUrl);
+                            this.currentIndex++;
+                        }
+                        
+                        showNotification('Browser', `Loading: ${new URL(finalUrl).hostname}`, 2000, 'browser');
+                    } catch (error) {
+                        console.warn('Direct load failed:', error);
+                        this.handleExternalUrl(finalUrl);
+                    }
+                } else {
+                    // Show options for incompatible site
+                    this.handleExternalUrl(finalUrl);
                 }
                 
                 this.updateNavButtons();
-                showNotification('Browser', `Loading: ${finalUrl}`, 2000, 'browser');
+            }
+
+            isSiteCompatible(url) {
+                try {
+                    const hostname = new URL(url).hostname;
+                    
+                    // Check if site is in blocked list
+                    if (this.iframeBlockedSites.some(site => hostname.includes(site))) {
+                        return false;
+                    }
+                    
+                    // Check if site is in compatible list
+                    if (this.compatibleSites.some(site => hostname.includes(site))) {
+                        return true;
+                    }
+                    
+                    // For unknown sites, assume they might work
+                    return true;
+                } catch {
+                    return true;
+                }
+            }
+
+            handleExternalUrl(url) {
+                const modal = document.createElement('div');
+                modal.className = 'external-url-modal';
+                modal.innerHTML = `
+                    <div class="external-url-content">
+                        <h3 style="color: #a0a0ff; margin-bottom: 15px;">🌐 External Website Detected</h3>
+                        <p style="margin-bottom: 20px; line-height: 1.5;">
+                            <strong>${url}</strong><br><br>
+                            This website may not work within WebOS due to browser restrictions.
+                        </p>
+                        <div class="external-url-buttons">
+                            <button class="external-url-btn primary" onclick="this.closest('.external-url-modal').remove(); enhancedBrowser.openExternal('${url}')">
+                                Open in New Tab
+                            </button>
+                            <button class="external-url-btn secondary" onclick="this.closest('.external-url-modal').remove(); enhancedBrowser.tryAnyway('${url}')">
+                                Try Anyway (May Fail)
+                            </button>
+                            <button class="external-url-btn secondary" onclick="this.closest('.external-url-modal').remove()">
+                                Cancel
+                            </button>
+                        </div>
+                        <div style="margin-top: 20px; font-size: 12px; color: #888; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                            💡 <strong>Tip:</strong> Use "lite" or "mobile" versions of sites for better compatibility
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.remove();
+                });
+            }
+
+            openExternal(url) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+                showNotification('Browser', 'Opening in new tab...', 2000, 'info');
+            }
+
+            tryAnyway(url) {
+                const frame = document.getElementById('browser-frame');
+                if (!frame) return;
+                
+                showNotification('Browser', 'Attempting to load site...', 3000, 'info');
+                frame.src = url;
+                
+                // Add to history
+                if (this.history[this.currentIndex] !== url) {
+                    this.history = this.history.slice(0, this.currentIndex + 1);
+                    this.history.push(url);
+                    this.currentIndex++;
+                }
             }
 
             goToUrl() {
@@ -2060,12 +2551,30 @@
                     forwardBtn.disabled = this.currentIndex >= this.history.length - 1;
                 }
             }
+
+            showLoadingIndicator() {
+                const container = document.querySelector('.browser-frame-container');
+                if (!container) return;
+                
+                let indicator = container.querySelector('.proxy-loading');
+                if (!indicator) {
+                    indicator = document.createElement('div');
+                    indicator.className = 'proxy-loading';
+                    indicator.innerHTML = `
+                        <div class="proxy-spinner"></div>
+                        <div>Loading website...</div>
+                    `;
+                    container.appendChild(indicator);
+                }
+                
+                setTimeout(() => indicator.remove(), 3000);
+            }
         }
 
-        const browser = new WebBrowser();
+        const enhancedBrowser = new EnhancedBrowser();
 
-        // ===== WINAMP PLAYER =====
-        class WinampPlayer {
+        // ===== ENHANCED WINAMP PLAYER =====
+        class EnhancedWinampPlayer {
             constructor() {
                 this.audio = document.getElementById('audio-player');
                 this.currentTrack = 0;
@@ -2073,37 +2582,30 @@
                 this.volume = 0.7;
                 this.playlist = [
                     {
-                        title: "Lo-fi Study Beat",
+                        title: "Lo-fi Radio Stream",
                         artist: "Chillhop Music",
-                        url: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_8c9d5d2b98.mp3?filename=lofi-study-112191.mp3",
-                        duration: 112
+                        url: "https://stream.laut.fm/chillhop",
+                        duration: 0,
+                        type: "stream"
                     },
                     {
-                        title: "Morning Garden",
-                        artist: "Acoustic Motivation",
-                        url: "https://cdn.pixabay.com/download/audio/2021/10/25/audio_5b73548728.mp3?filename=acoustic-motivation-11290.mp3",
-                        duration: 97
-                    },
-                    {
-                        title: "Jazz Relax",
-                        artist: "Piano Jazz",
-                        url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d5e6e7d156.mp3?filename=relaxing-jazz-piano-11139.mp3",
-                        duration: 117
-                    },
-                    {
-                        title: "Synthwave Drive",
-                        artist: "Retro Wave",
-                        url: "https://cdn.pixabay.com/download/audio/2022/08/25/audio_f8d7c6b73c.mp3?filename=synthwave-123316.mp3",
-                        duration: 125
+                        title: "Classical Radio",
+                        artist: "BBC Radio 3",
+                        url: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_three",
+                        duration: 0,
+                        type: "stream"
                     },
                     {
                         title: "Ambient Space",
-                        artist: "Cosmic Sounds",
-                        url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_4f0d2d6c7b.mp3?filename=ambient-space-11135.mp3",
-                        duration: 135
+                        artist: "Space Ambient",
+                        url: "https://somafm.com/spacestation130.pls",
+                        duration: 0,
+                        type: "playlist"
                     }
                 ];
                 this.visualizerInterval = null;
+                this.requiresUserInteraction = false;
+                this.audioPermissions = false;
             }
 
             initialize() {
@@ -2121,8 +2623,76 @@
                     showNotification('Winamp Error', 'Failed to play audio track', 3000, 'error');
                 });
                 
+                // Check audio permissions
+                this.checkAudioPermissions();
+                
+                // Add user interaction requirement overlay
+                if (this.requiresUserInteraction) {
+                    this.addAudioPermissionOverlay();
+                }
+                
                 // Start visualizer animation
                 this.startVisualizer();
+            }
+
+            checkAudioPermissions() {
+                const testAudio = new Audio();
+                testAudio.volume = 0.01;
+                
+                testAudio.play().then(() => {
+                    this.requiresUserInteraction = false;
+                    this.audioPermissions = true;
+                    testAudio.pause();
+                }).catch(() => {
+                    this.requiresUserInteraction = true;
+                });
+            }
+
+            addAudioPermissionOverlay() {
+                const player = document.querySelector('.winamp-player');
+                if (!player) return;
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'audio-permission';
+                overlay.innerHTML = `
+                    <div style="font-size: 48px; margin-bottom: 20px;">🎵</div>
+                    <h3 style="margin-bottom: 10px;">Audio Permission Required</h3>
+                    <p style="margin-bottom: 25px; opacity: 0.8; max-width: 300px;">
+                        Your browser requires a click to enable audio playback.
+                    </p>
+                    <button onclick="enhancedWinamp.enableAudio()" 
+                            style="background: linear-gradient(135deg, #667eea, #764ba2); 
+                                   border: none; padding: 15px 30px; border-radius: 10px; 
+                                   color: white; font-weight: 600; cursor: pointer;">
+                        Enable Audio
+                    </button>
+                `;
+                
+                player.style.position = 'relative';
+                player.appendChild(overlay);
+            }
+
+            enableAudio() {
+                const unlockAudio = () => {
+                    const silentAudio = new Audio();
+                    silentAudio.volume = 0.01;
+                    
+                    silentAudio.play().then(() => {
+                        this.audioPermissions = true;
+                        this.requiresUserInteraction = false;
+                        
+                        const overlay = document.querySelector('.audio-permission');
+                        if (overlay) overlay.remove();
+                        
+                        showNotification('Winamp', 'Audio enabled! Ready to play.', 3000, 'success');
+                        silentAudio.pause();
+                    }).catch(e => {
+                        console.error('Failed to unlock audio:', e);
+                        showNotification('Winamp', 'Could not enable audio. Try clicking play button.', 4000, 'error');
+                    });
+                };
+                
+                unlockAudio();
             }
 
             updatePlaylist() {
@@ -2143,7 +2713,7 @@
                             <strong>${index + 1}. ${track.title}</strong><br>
                             <small>${track.artist}</small>
                         </div>
-                        <div class="track-duration">${durationStr}</div>
+                        <div class="track-duration">${track.duration ? durationStr : 'LIVE'}</div>
                     `;
                     
                     item.onclick = () => this.playTrack(index);
@@ -2152,7 +2722,14 @@
                 });
             }
 
-            playTrack(index) {
+            async playTrack(index) {
+                if (this.requiresUserInteraction && !this.audioPermissions) {
+                    showNotification('Winamp', 
+                        'Please click the "Enable Audio" button first.', 
+                        3000, 'warning');
+                    return;
+                }
+                
                 if (index < 0 || index >= this.playlist.length) return;
                 
                 this.currentTrack = index;
@@ -2161,19 +2738,20 @@
                 this.audio.src = track.url;
                 this.audio.load();
                 
-                this.audio.play().then(() => {
+                try {
+                    await this.audio.play();
                     this.isPlaying = true;
                     document.getElementById('play-btn').textContent = '❚❚';
                     this.updateDisplay(`▶ ${track.title} - ${track.artist}`);
                     this.updatePlaylist();
                     this.updateTimeDisplay();
                     showNotification('Winamp', `Now playing: ${track.title}`, 3000, 'winamp');
-                }).catch(error => {
+                } catch (error) {
                     console.error('Playback failed:', error);
                     showNotification('Winamp Error', 
-                        'Cannot play track. Some browsers restrict autoplay. Click play button.', 
+                        'Cannot play track. Click the "Enable Audio" button first.', 
                         4000, 'error');
-                });
+                }
             }
 
             togglePlay() {
@@ -2190,7 +2768,6 @@
                         const track = this.playlist[this.currentTrack];
                         this.updateDisplay(`▶ ${track.title}`);
                     } else {
-                        // No track selected, play first one
                         this.playTrack(0);
                     }
                 }
@@ -2248,7 +2825,6 @@
                 if (duration > 0) {
                     const percent = (current / duration) * 100;
                     document.getElementById('progress-fill').style.width = percent + '%';
-                    
                     this.updateTimeDisplay();
                 }
             }
@@ -2309,8 +2885,6 @@
                     bars.forEach(bar => {
                         const newHeight = Math.random() * 100;
                         bar.style.height = newHeight + '%';
-                        
-                        // Add color variation based on height
                         const hue = 120 + newHeight * 0.5;
                         bar.style.background = `hsl(${hue}, 100%, 50%)`;
                         bar.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px hsl(${hue}, 100%, 50%)`;
@@ -2319,7 +2893,7 @@
             }
         }
 
-        const winampPlayer = new WinampPlayer();
+        const enhancedWinamp = new EnhancedWinampPlayer();
 
         // ===== TERMINAL =====
         class Terminal {
@@ -2346,7 +2920,7 @@
                 
                 if (this.outputElement && !this.outputElement.innerHTML.trim()) {
                     this.clear();
-                    this.printLine('Welcome to WebOS Terminal v1.0');
+                    this.printLine('Welcome to WebOS Terminal v2.0');
                     this.printLine('Type "help" for available commands');
                     this.printLine('');
                 }
@@ -2455,9 +3029,9 @@
             }
 
             showAbout() {
-                this.printLine('WebOS v1.0 - A web-based operating system');
+                this.printLine('WebOS v2.0 - A web-based operating system');
                 this.printLine('Built with HTML, CSS, and JavaScript');
-                this.printLine('Created as a learning project');
+                this.printLine('Enhanced with browser fixes and local storage');
             }
 
             reboot() {
@@ -2503,6 +3077,168 @@
 
         const terminal = new Terminal();
 
+        // ===== STORAGE MANAGER =====
+        class StorageManager {
+            constructor() {
+                this.settingsKey = 'webos_v2_settings';
+                this.filesKey = 'webos_v2_files';
+                this.historyKey = 'webos_v2_history';
+            }
+            
+            saveSettings(settings) {
+                try {
+                    localStorage.setItem(this.settingsKey, JSON.stringify({
+                        ...settings,
+                        lastSave: new Date().toISOString()
+                    }));
+                    return true;
+                } catch (e) {
+                    console.error('Failed to save settings:', e);
+                    return false;
+                }
+            }
+            
+            loadSettings() {
+                try {
+                    const saved = localStorage.getItem(this.settingsKey);
+                    return saved ? JSON.parse(saved) : null;
+                } catch (e) {
+                    console.error('Failed to load settings:', e);
+                    return null;
+                }
+            }
+            
+            saveWindowPositions(windows) {
+                const positions = {};
+                Object.keys(windows).forEach(appName => {
+                    const element = document.getElementById(`${appName}-window`);
+                    if (element) {
+                        positions[appName] = {
+                            x: parseInt(element.style.left) || 100,
+                            y: parseInt(element.style.top) || 100,
+                            width: element.offsetWidth,
+                            height: element.offsetHeight,
+                            maximized: windowManager.maximizedApps.has(appName),
+                            minimized: windowManager.minimizedApps.has(appName)
+                        };
+                    }
+                });
+                
+                localStorage.setItem('webos_window_positions', JSON.stringify(positions));
+            }
+            
+            loadWindowPositions() {
+                try {
+                    const saved = localStorage.getItem('webos_window_positions');
+                    return saved ? JSON.parse(saved) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+            
+            exportOS() {
+                const state = {
+                    settings: this.loadSettings(),
+                    windows: this.loadWindowPositions(),
+                    localFiles: enhancedFileExplorer.localFiles,
+                    timestamp: new Date().toISOString(),
+                    version: '2.0'
+                };
+                
+                const dataStr = JSON.stringify(state, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportName = `webos_backup_${new Date().toISOString().slice(0,10)}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportName);
+                linkElement.click();
+                
+                showNotification('System', `Backup exported: ${exportName}`, 4000, 'success');
+            }
+            
+            importOS(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const state = JSON.parse(e.target.result);
+                        
+                        if (state.version === '2.0') {
+                            if (state.settings) {
+                                localStorage.setItem(this.settingsKey, JSON.stringify(state.settings));
+                            }
+                            
+                            if (state.windows) {
+                                localStorage.setItem('webos_window_positions', JSON.stringify(state.windows));
+                            }
+                            
+                            if (state.localFiles) {
+                                localStorage.setItem('webos_local_files', JSON.stringify(state.localFiles));
+                                enhancedFileExplorer.localFiles = state.localFiles;
+                            }
+                            
+                            showNotification('System', 'Backup restored successfully! Refresh to apply.', 5000, 'success');
+                        } else {
+                            showNotification('Import Error', 'Invalid backup file version', 4000, 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Import Error', 'Failed to parse backup file', 4000, 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        const storageManager = new StorageManager();
+
+        // ===== QUICK LAUNCH =====
+        function createQuickLaunch() {
+            const quickLaunch = document.createElement('div');
+            quickLaunch.className = 'quick-launch';
+            quickLaunch.innerHTML = `
+                <div class="quick-launch-btn" onclick="openApp('files')" title="File Explorer">📁</div>
+                <div class="quick-launch-btn" onclick="openApp('browser')" title="Web Browser">🌐</div>
+                <div class="quick-launch-btn" onclick="openApp('winamp')" title="Winamp">🎵</div>
+                <div class="quick-launch-btn" onclick="openApp('terminal')" title="Terminal">💻</div>
+                <div class="quick-launch-btn" onclick="storageManager.exportOS()" title="Export Backup">💾</div>
+                <div class="quick-launch-btn" onclick="showNotification('Settings', 'Coming soon!')" title="Settings">⚙️</div>
+            `;
+            
+            document.body.appendChild(quickLaunch);
+            
+            // Make draggable
+            let isDragging = false;
+            let offset = { x: 0, y: 0 };
+            
+            quickLaunch.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offset.x = e.clientX - quickLaunch.getBoundingClientRect().left;
+                offset.y = e.clientY - quickLaunch.getBoundingClientRect().top;
+                quickLaunch.style.cursor = 'grabbing';
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const x = e.clientX - offset.x;
+                const y = e.clientY - offset.y;
+                
+                const maxX = window.innerWidth - quickLaunch.offsetWidth - 20;
+                const maxY = window.innerHeight - quickLaunch.offsetHeight - 20;
+                
+                quickLaunch.style.left = Math.max(20, Math.min(x, maxX)) + 'px';
+                quickLaunch.style.top = Math.max(20, Math.min(y, maxY)) + 'px';
+                quickLaunch.style.right = 'auto';
+                quickLaunch.style.transform = 'none';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                quickLaunch.style.cursor = 'default';
+            });
+        }
+
         // ===== SYSTEM FUNCTIONS =====
         function openApp(appName) {
             windowManager.openApp(appName);
@@ -2529,10 +3265,14 @@
             windowManager.startDrag(event, appName);
         }
 
-        function shutdown() {
-            showNotification('System', 'Shutting down WebOS...', 2000, 'system');
+        function enhancedShutdown() {
+            // Save everything
+            storageManager.saveSettings(WebOS.settings);
+            storageManager.saveWindowPositions(windowManager.windows);
+            enhancedFileExplorer.saveLocalFiles();
             
-            // Create shutdown screen
+            showNotification('System', 'Shutting down WebOS v2.0...', 2000, 'system');
+            
             document.body.innerHTML = `
                 <div style="
                     background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
@@ -2546,12 +3286,12 @@
                     text-align: center;
                 ">
                     <div style="font-size: 72px; margin-bottom: 30px;">🌀</div>
-                    <h1 style="font-size: 48px; margin-bottom: 20px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WebOS</h1>
-                    <p style="font-size: 20px; margin-bottom: 40px; opacity: 0.8;">v1.0 - Shutting down...</p>
+                    <h1 style="font-size: 48px; margin-bottom: 20px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WebOS v2.0</h1>
+                    <p style="font-size: 20px; margin-bottom: 40px; opacity: 0.8;">Enhanced Version - Shutting down...</p>
                     <div style="width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 50px;">
                         <div id="shutdown-progress" style="height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); width: 0%; transition: width 3s;"></div>
                     </div>
-                    <p style="opacity: 0.6; margin-bottom: 30px;">It's now safe to turn off your browser</p>
+                    <p style="opacity: 0.6; margin-bottom: 30px;">All settings and files have been saved</p>
                     <button onclick="location.reload()" style="
                         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                         border: none;
@@ -2563,13 +3303,13 @@
                         cursor: pointer;
                         transition: all 0.3s;
                         box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+                        margin-top: 20px;
                     ">
                         Restart WebOS
                     </button>
                 </div>
             `;
             
-            // Animate progress bar
             setTimeout(() => {
                 const progress = document.getElementById('shutdown-progress');
                 if (progress) {
@@ -2602,7 +3342,9 @@
 
         // ===== INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Register apps with window manager
+            console.log('🚀 WebOS v2.0 Enhanced Initializing...');
+            
+            // Register apps
             const apps = ['files', 'browser', 'winamp', 'terminal'];
             apps.forEach(appName => {
                 const element = document.getElementById(`${appName}-window`);
@@ -2631,61 +3373,51 @@
                 }
             });
             
+            // Create quick launch
+            createQuickLaunch();
+            
+            // Auto-save
+            window.addEventListener('beforeunload', () => {
+                storageManager.saveSettings(WebOS.settings);
+                storageManager.saveWindowPositions(windowManager.windows);
+                enhancedFileExplorer.saveLocalFiles();
+            });
+            
+            setInterval(() => {
+                storageManager.saveSettings(WebOS.settings);
+                storageManager.saveWindowPositions(windowManager.windows);
+            }, 30000);
+            
             // Welcome notification
             setTimeout(() => {
                 showNotification(
-                    'Welcome to WebOS v1.0',
-                    'Your complete web-based operating system is ready!',
-                    5000,
-                    'system'
+                    'WebOS v2.0 Enhanced Ready!',
+                    'Browser fixes ✓ Audio permissions ✓ Local storage ✓\nTry entering any URL in the browser!',
+                    6000,
+                    'success'
                 );
-            }, 1000);
+            }, 2000);
             
-            // Initialize taskbar apps
-            const taskbarApps = document.querySelectorAll('.taskbar-app');
-            taskbarApps.forEach(app => {
-                app.addEventListener('click', function() {
-                    const appName = this.textContent.trim().replace(/[^\w\s]/gi, '').trim();
-                    windowManager.toggleApp(appName.toLowerCase());
-                });
-            });
-            
-            // Initialize browser URL bar
-            const urlBar = document.getElementById('url-bar');
-            if (urlBar) {
-                urlBar.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        browser.goToUrl();
-                    }
-                });
-            }
-            
-            // Initialize terminal input
-            const terminalInput = document.getElementById('terminal-input');
-            if (terminalInput) {
-                terminalInput.addEventListener('focus', () => {
-                    windowManager.bringToFront('terminal');
-                });
-            }
+            console.log('✅ WebOS v2.0 Enhanced Ready!');
         });
 
-        // Global function for opening apps from icons
+        // Make everything globally available
         window.openApp = openApp;
         window.closeWindow = closeWindow;
         window.minimizeWindow = minimizeWindow;
         window.toggleMaximize = toggleMaximize;
         window.toggleStartMenu = toggleStartMenu;
         window.startDrag = startDrag;
-        window.shutdown = shutdown;
+        window.shutdown = enhancedShutdown;
         window.showNotification = showNotification;
-
-        // Make components available globally for debugging
-        window.fileExplorer = fileExplorer;
-        window.browser = browser;
-        window.winampPlayer = winampPlayer;
+        window.enhancedFileExplorer = enhancedFileExplorer;
+        window.enhancedBrowser = enhancedBrowser;
+        window.enhancedWinamp = enhancedWinamp;
         window.terminal = terminal;
         window.windowManager = windowManager;
         window.notificationSystem = notificationSystem;
+        window.storageManager = storageManager;
+        window.WebOS.storage = storageManager;
     </script>
 </body>
 </html>
