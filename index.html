@@ -3,303 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebOS v0.2 - Now with Winamp!</title>
+    <title>WebOS v1.0 - Complete Working Version</title>
     <style>
-        /* === OS STYLING === */
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #e0e0e0;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #ffffff;
             height: 100vh;
             overflow: hidden;
             user-select: none;
         }
 
-        /* === DESKTOP === */
+        /* ===== DESKTOP ===== */
         .desktop {
             height: 100vh;
-            padding-top: 40px;
-            padding-bottom: 60px;
+            padding: 40px 20px 70px 20px;
             position: relative;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(100, 100, 255, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255, 100, 100, 0.1) 0%, transparent 20%);
+                radial-gradient(circle at 15% 25%, rgba(120, 119, 198, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 85% 75%, rgba(255, 119, 198, 0.1) 0%, transparent 25%);
         }
 
-        /* === TASKBAR === */
-        .taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: rgba(30, 30, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 1000;
-        }
-
-        .start-btn {
-            background: linear-gradient(135deg, #4cc9f0, #4361ee);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-right: 20px;
-            transition: transform 0.2s;
-        }
-
-        .start-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .taskbar-apps {
-            display: flex;
-            gap: 10px;
-        }
-
-        .taskbar-app {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .taskbar-app:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .clock {
-            margin-left: auto;
-            color: #4cc9f0;
-            font-family: monospace;
-            font-size: 14px;
-        }
-
-        /* === DESKTOP ICONS === */
         .desktop-icons {
             display: grid;
-            grid-template-columns: repeat(auto-fill, 80px);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, 90px);
+            gap: 25px;
             padding: 20px;
-            max-width: 600px;
+            max-width: 700px;
         }
 
         .icon {
             text-align: center;
             cursor: pointer;
-            padding: 10px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            width: 80px;
+            padding: 15px 10px;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 90px;
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .icon:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .icon:active {
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .icon img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.4));
         }
 
         .icon span {
             display: block;
-            font-size: 12px;
-            color: #fff;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.3;
         }
 
-        /* === WINDOWS === */
+        /* ===== TASKBAR ===== */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(20, 20, 35, 0.98);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            z-index: 10000;
+            box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 25px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 25px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .start-btn:active {
+            transform: translateY(0);
+        }
+
+        .taskbar-apps {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .taskbar-app {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+
+        .taskbar-app:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .taskbar-app.active {
+            background: rgba(102, 126, 234, 0.25);
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+
+        .system-tray {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .tray-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            position: relative;
+        }
+
+        .tray-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tray-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ff4757;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        .clock {
+            color: #a0a0ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== WINDOWS ===== */
         .window {
             position: absolute;
-            background: rgba(40, 40, 60, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            min-width: 400px;
-            min-height: 300px;
+            background: rgba(28, 28, 44, 0.97);
+            backdrop-filter: blur(30px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            min-width: 500px;
+            min-height: 350px;
             display: none;
-            z-index: 100;
+            z-index: 1000;
             overflow: hidden;
+            resize: both;
         }
 
         .window.active {
-            display: block;
+            display: flex;
+            flex-direction: column;
         }
 
         .window-header {
-            background: rgba(30, 30, 46, 0.9);
-            padding: 15px;
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.95), rgba(30, 30, 50, 0.95));
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             cursor: move;
+            user-select: none;
+            flex-shrink: 0;
         }
 
         .window-title {
-            font-weight: bold;
-            color: #4cc9f0;
+            font-weight: 600;
+            color: #a0a0ff;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .window-controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .window-btn {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
         }
 
-        .close { background: #ff5f57; }
-        .minimize { background: #ffbd2e; }
-        .maximize { background: #28ca42; }
+        .window-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .window-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: rgba(0, 0, 0, 0.7);
+            font-weight: bold;
+        }
+
+        .close {
+            background: #ff5f57;
+        }
+
+        .minimize {
+            background: #ffbd2e;
+        }
+
+        .maximize {
+            background: #28ca42;
+        }
 
         .window-content {
-            padding: 20px;
-            height: calc(100% - 50px);
+            padding: 25px;
+            flex: 1;
             overflow: auto;
+            background: rgba(20, 20, 35, 0.7);
         }
 
-        /* === WINAMP PLAYER (RETRO STYLE) === */
+        /* ===== FILE EXPLORER ===== */
+        .file-explorer {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .explorer-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toolbar-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.3s;
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .explorer-path {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+            flex: 1;
+        }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .file-icon {
+            font-size: 36px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .file-name {
+            font-size: 13px;
+            font-weight: 500;
+            word-break: break-word;
+            max-width: 100%;
+        }
+
+        .file-size {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 2px;
+        }
+
+        /* ===== WEB BROWSER ===== */
+        .browser-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .browser-toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .url-container {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            min-width: 300px;
+        }
+
+        .url-bar {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .url-bar:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .go-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .go-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .browser-frame-container {
+            flex: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            position: relative;
+        }
+
+        .browser-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .browser-status {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 15px;
+            font-size: 12px;
+            display: none;
+        }
+
+        /* ===== WINAMP PLAYER ===== */
+        .winamp-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
         .winamp-player {
-            width: 275px;
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            border: 2px solid #444;
-            border-radius: 5px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 3px solid #333;
+            border-radius: 8px;
             font-family: 'Tahoma', 'Arial', sans-serif;
             color: #ccc;
-            user-select: none;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .winamp-titlebar {
-            background: linear-gradient(to bottom, #000066, #000033);
+            background: linear-gradient(to right, #000066, #330066);
             color: #00ff00;
-            padding: 3px 8px;
-            font-size: 11px;
+            padding: 6px 12px;
+            font-size: 12px;
             font-weight: bold;
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #333;
-            font-family: 'Fixedsys', monospace;
+            border-bottom: 2px solid #444;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #00ff00;
         }
 
         .winamp-controls {
-            padding: 10px;
-            background: #222;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .winamp-display {
             background: #000;
             color: #0f0;
-            font-family: 'Fixedsys', monospace;
-            padding: 5px 10px;
-            margin: 10px 0;
-            border-radius: 3px;
-            border: 1px solid #333;
-            height: 40px;
+            font-family: 'Courier New', monospace;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 2px solid #333;
+            min-height: 50px;
             display: flex;
             align-items: center;
             font-size: 14px;
+            text-shadow: 0 0 10px #0f0;
+            letter-spacing: 1px;
         }
 
         .winamp-buttons {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin: 10px 0;
         }
 
         .winamp-button {
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 3px;
+            background: linear-gradient(to bottom, #444, #222);
+            border: 2px outset #666;
+            border-radius: 4px;
             color: #ccc;
-            padding: 5px;
-            font-size: 10px;
+            padding: 10px 5px;
+            font-size: 11px;
             text-align: center;
             cursor: pointer;
             transition: all 0.1s;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
         .winamp-button:hover {
-            background: #444;
-            border-color: #666;
+            background: linear-gradient(to bottom, #555, #333);
+            border-color: #777;
+            color: #fff;
+        }
+
+        .winamp-button:active {
+            border-style: inset;
+            transform: translateY(1px);
         }
 
         .winamp-button.active {
-            background: #006600;
+            background: linear-gradient(to bottom, #006600, #003300);
             color: #0f0;
+            border-color: #00aa00;
         }
 
-        .winamp-eq {
-            background: #111;
-            padding: 10px;
-            border-radius: 3px;
-            margin-top: 10px;
-        }
-
-        .eq-sliders {
+        .playback-controls {
             display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .eq-slider {
-            display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 15px;
+            margin: 15px 0;
         }
 
-        .eq-label {
-            font-size: 9px;
-            margin-bottom: 3px;
+        .time-display {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #0f0;
+            min-width: 100px;
         }
 
-        .eq-bar {
-            width: 15px;
-            height: 60px;
+        .progress-bar {
+            flex: 1;
+            height: 8px;
             background: #222;
-            border-radius: 2px;
-            position: relative;
+            border-radius: 4px;
+            border: 1px solid #444;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        .eq-level {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: linear-gradient(to top, #00aa00, #00ff00);
-            transition: height 0.3s;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00aa00, #00ff00);
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .volume-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #222;
+            border-radius: 3px;
+            border: 1px solid #444;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #0f0;
+            cursor: pointer;
+            border: 2px solid #000;
         }
 
         .winamp-playlist {
             background: #111;
-            margin-top: 10px;
-            border-radius: 3px;
-            max-height: 150px;
+            border-radius: 4px;
+            border: 2px inset #333;
+            max-height: 200px;
             overflow-y: auto;
+            flex: 1;
         }
 
         .playlist-item {
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-bottom: 1px solid #222;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
         }
 
         .playlist-item:hover {
@@ -309,128 +669,136 @@
         .playlist-item.playing {
             background: #003300;
             color: #0f0;
+            border-left: 3px solid #0f0;
+        }
+
+        .track-duration {
+            color: #888;
+            font-size: 11px;
+            font-family: monospace;
         }
 
         .visualizer {
-            height: 30px;
+            height: 40px;
             background: #000;
-            margin-top: 10px;
-            border-radius: 3px;
+            border-radius: 4px;
+            border: 2px inset #333;
             display: flex;
             align-items: flex-end;
             justify-content: space-around;
             padding: 5px;
-        }
-
-        .v-bar {
-            width: 3px;
-            background: #0f0;
-            border-radius: 1px;
-            transition: height 0.1s;
-        }
-
-        /* === PRIVATE BROWSER === */
-        .private-badge {
-            background: #ff4444;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 10px;
-        }
-
-        .incognito-frame {
-            filter: sepia(0.3) brightness(0.9);
-        }
-
-        .history-warning {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
-
-        .burn-button {
-            background: linear-gradient(135deg, #ff4444, #cc0000);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
             margin-top: 10px;
         }
 
-        /* === FILE EXPLORER === */
-        .files-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
+        .v-bar {
+            width: 4px;
+            background: #0f0;
+            border-radius: 2px;
+            transition: height 0.05s;
+            box-shadow: 0 0 5px #0f0;
         }
 
-        .file-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
+        /* ===== TERMINAL ===== */
+        .terminal-container {
+            height: 100%;
+            background: #1e1e1e;
             border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            font-family: 'JetBrains Mono', 'Cascadia Code', monospace;
         }
 
-        .file-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
         }
 
-        /* === BROWSER === */
-        .browser-bar {
+        .terminal-title {
+            color: #00ff00;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .terminal-controls {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
-        .url-bar {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 10px 20px;
-            color: white;
-        }
-
-        .go-btn {
-            background: #4cc9f0;
+        .terminal-btn {
+            background: #444;
             border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            color: white;
+            color: #ccc;
+            padding: 4px 12px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
         }
 
-        .browser-frame {
-            width: 100%;
-            height: 400px;
-            background: white;
-            border-radius: 8px;
+        .terminal-btn:hover {
+            background: #555;
+        }
+
+        .terminal-output {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .terminal-line {
+            margin-bottom: 5px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .command-line {
+            color: #00ff00;
+        }
+
+        .terminal-input {
+            background: transparent;
             border: none;
+            border-top: 1px solid #444;
+            padding: 15px 20px;
+            color: #00ff00;
+            font-family: inherit;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
         }
 
-        /* === START MENU === */
+        .terminal-input::placeholder {
+            color: #666;
+        }
+
+        /* ===== START MENU ===== */
         .start-menu {
             position: fixed;
-            bottom: 70px;
-            left: 20px;
-            width: 300px;
-            background: rgba(40, 40, 60, 0.98);
-            backdrop-filter: blur(30px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            bottom: 80px;
+            left: 25px;
+            width: 350px;
+            background: rgba(30, 30, 50, 0.98);
+            backdrop-filter: blur(40px);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
             display: none;
-            z-index: 1001;
+            z-index: 10001;
             overflow: hidden;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .start-menu.active {
@@ -438,622 +806,1886 @@
         }
 
         .start-menu-header {
-            padding: 20px;
-            background: linear-gradient(135deg, #4cc9f0, #4361ee);
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
             color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .start-menu-items {
-            padding: 10px;
-        }
-
-        .start-item {
-            padding: 15px;
-            border-radius: 8px;
-            cursor: pointer;
+        .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            transition: background 0.3s;
+            margin-bottom: 10px;
         }
 
-        .start-item:hover {
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff, #ddd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #667eea;
+            font-weight: bold;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-details h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .user-details p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .start-menu-sections {
+            display: flex;
+            height: 400px;
+        }
+
+        .start-menu-left {
+            width: 60%;
+            padding: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+
+        .start-menu-right {
+            width: 40%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+        }
+
+        .menu-section h4 {
+            color: #a0a0ff;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            border-color: rgba(102, 126, 234, 0.3);
         }
 
-        /* === NOTIFICATION === */
-        .notification {
+        .menu-item-icon {
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .menu-item-text h5 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .menu-item-text p {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .power-options {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .power-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: 10px;
+            color: #ff4757;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .power-btn:hover {
+            background: rgba(255, 71, 87, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ===== NOTIFICATIONS ===== */
+        .notification-container {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(40, 40, 60, 0.95);
-            padding: 15px 25px;
-            border-radius: 10px;
-            border-left: 5px solid #4cc9f0;
-            display: none;
-            animation: slideIn 0.5s ease;
-            z-index: 2000;
+            width: 350px;
+            z-index: 20000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .notification {
+            background: rgba(30, 30, 50, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 14px;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            animation: slideInRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: right;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* === UTILITIES === */
-        .hidden { display: none; }
-        .drag-over { opacity: 0.5; }
+        @keyframes slideInRight {
+            from { transform: translateX(100%) scale(0.8); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
+        }
+
+        .notification.hiding {
+            animation: slideOutRight 0.5s ease forwards;
+        }
+
+        @keyframes slideOutRight {
+            to { transform: translateX(100%) scale(0.8); opacity: 0; }
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #a0a0ff;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            font-size: 18px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .notification-body {
+            font-size: 14px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .notification-progress {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .notification-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 100%;
+            animation: progressShrink 5s linear forwards;
+        }
+
+        @keyframes progressShrink {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .dragging {
+            opacity: 0.8;
+            cursor: move !important;
+        }
+
+        .resizing {
+            cursor: nwse-resize !important;
+        }
+
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: loadingShimmer 1.5s infinite;
+        }
+
+        @keyframes loadingShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid transparent;
+            background-clip: content-box;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .desktop-icons {
+                grid-template-columns: repeat(auto-fill, 80px);
+                gap: 15px;
+            }
+            
+            .window {
+                min-width: 90vw;
+                min-height: 70vh;
+                left: 5vw !important;
+                top: 5vh !important;
+            }
+            
+            .start-menu {
+                width: 90vw;
+                left: 5vw;
+            }
+            
+            .start-menu-sections {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .start-menu-left,
+            .start-menu-right {
+                width: 100%;
+                border: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- DESKTOP -->
+    <!-- DESKTOP WITH ICONS -->
     <div class="desktop" id="desktop">
         <div class="desktop-icons">
-            <div class="icon" onclick="openApp('files')">
-                <span>📁</span>
-                <span>Files</span>
+            <div class="icon" onclick="openApp('files')" title="File Explorer">
+                <div class="file-icon">📁</div>
+                <span>File Explorer</span>
             </div>
-            <div class="icon" onclick="openApp('browser')">
-                <span>🌐</span>
+            <div class="icon" onclick="openApp('browser')" title="Web Browser">
+                <div class="file-icon">🌐</div>
                 <span>Web Browser</span>
             </div>
-            <div class="icon" onclick="openApp('private-browser')">
-                <span>🕵️</span>
-                <span>Private Browser</span>
+            <div class="icon" onclick="openApp('winamp')" title="Winamp Player">
+                <div class="file-icon">🎵</div>
+                <span>Winamp Player</span>
             </div>
-            <div class="icon" onclick="openApp('winamp')">
-                <span>🎵</span>
-                <span>Winamp</span>
-            </div>
-            <div class="icon" onclick="openApp('terminal')">
-                <span>💻</span>
+            <div class="icon" onclick="openApp('terminal')" title="Terminal">
+                <div class="file-icon">💻</div>
                 <span>Terminal</span>
+            </div>
+            <div class="icon" onclick="showNotification('System', 'Settings app coming soon!')" title="Settings">
+                <div class="file-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+            <div class="icon" onclick="openApp('notepad')" title="Notepad">
+                <div class="file-icon">📝</div>
+                <span>Notepad</span>
             </div>
         </div>
     </div>
 
-    <!-- WINDOWS -->
-    <div class="window" id="files-window" style="top: 100px; left: 100px;">
-        <div class="window-header">
-            <div class="window-title">📁 File Explorer</div>
+    <!-- FILE EXPLORER WINDOW -->
+    <div class="window" id="files-window" style="top: 100px; left: 100px; width: 700px; height: 500px;">
+        <div class="window-header" onmousedown="startDrag(event, 'files')">
+            <div class="window-title">
+                <span>📁</span>
+                File Explorer
+            </div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('files')"></div>
-                <div class="window-btn maximize" onclick="maximizeWindow('files')"></div>
+                <div class="window-btn maximize" onclick="toggleMaximize('files')"></div>
                 <div class="window-btn close" onclick="closeWindow('files')"></div>
             </div>
         </div>
         <div class="window-content">
-            <div class="files-grid" id="files-grid">
-                <!-- Files will be generated here -->
+            <div class="file-explorer">
+                <div class="explorer-toolbar">
+                    <button class="toolbar-btn" onclick="fileExplorer.goBack()">
+                        ← Back
+                    </button>
+                    <button class="toolbar-btn" onclick="fileExplorer.goForward()">
+                        → Forward
+                    </button>
+                    <button class="toolbar-btn" onclick="fileExplorer.goUp()">
+                        ↑ Up
+                    </button>
+                    <button class="toolbar-btn" onclick="fileExplorer.refresh()">
+                        ↻ Refresh
+                    </button>
+                    <button class="toolbar-btn" onclick="fileExplorer.createFolder()">
+                        + New Folder
+                    </button>
+                </div>
+                <div class="explorer-path" id="current-path">
+                    C:\Users\WebOS\Desktop
+                </div>
+                <div class="files-grid" id="files-grid">
+                    <!-- Files will be loaded here -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- STANDARD BROWSER -->
-    <div class="window" id="browser-window" style="top: 150px; left: 200px;">
-        <div class="window-header">
-            <div class="window-title">🌐 Web Browser</div>
+    <!-- WEB BROWSER WINDOW -->
+    <div class="window" id="browser-window" style="top: 150px; left: 250px; width: 900px; height: 600px;">
+        <div class="window-header" onmousedown="startDrag(event, 'browser')">
+            <div class="window-title">
+                <span>🌐</span>
+                Web Browser
+            </div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('browser')"></div>
-                <div class="window-btn maximize" onclick="maximizeWindow('browser')"></div>
+                <div class="window-btn maximize" onclick="toggleMaximize('browser')"></div>
                 <div class="window-btn close" onclick="closeWindow('browser')"></div>
             </div>
         </div>
         <div class="window-content">
-            <div class="browser-bar">
-                <input type="text" class="url-bar" id="url-bar" value="https://en.wikipedia.org/wiki/WebOS" placeholder="Enter URL...">
-                <button class="go-btn" onclick="goToUrl('standard')">Go</button>
+            <div class="browser-container">
+                <div class="browser-toolbar">
+                    <div class="nav-buttons">
+                        <button class="nav-btn" onclick="browser.goBack()" id="back-btn" title="Back">←</button>
+                        <button class="nav-btn" onclick="browser.goForward()" id="forward-btn" title="Forward">→</button>
+                        <button class="nav-btn" onclick="browser.refresh()" title="Refresh">↻</button>
+                        <button class="nav-btn" onclick="browser.goHome()" title="Home">⌂</button>
+                    </div>
+                    <div class="url-container">
+                        <input type="text" class="url-bar" id="url-bar" 
+                               value="https://lite.duckduckgo.com/lite/"
+                               placeholder="Enter URL or search..."
+                               onkeydown="if(event.key === 'Enter') browser.goToUrl()">
+                        <button class="go-btn" onclick="browser.goToUrl()">Go</button>
+                    </div>
+                </div>
+                <div class="browser-frame-container">
+                    <iframe class="browser-frame" id="browser-frame" 
+                            src="https://lite.duckduckgo.com/lite/">
+                    </iframe>
+                    <div class="browser-status" id="browser-status"></div>
+                </div>
+                <div style="margin-top: 15px; font-size: 12px; color: #888; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                    💡 <strong>Tip:</strong> For best compatibility, use "lite" versions of sites. Try: 
+                    <button onclick="browser.loadUrl('https://lite.duckduckgo.com/lite/')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">DuckDuckGo Lite</button>
+                    <button onclick="browser.loadUrl('https://en.m.wikipedia.org')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">Wikipedia Mobile</button>
+                    <button onclick="browser.loadUrl('https://old.reddit.com')" style="background: none; border: 1px solid #667eea; color: #667eea; padding: 3px 8px; border-radius: 4px; margin: 0 5px; cursor: pointer;">Old Reddit</button>
+                </div>
             </div>
-            <iframe class="browser-frame" id="browser-frame" src="https://en.wikipedia.org/wiki/WebOS"></iframe>
         </div>
     </div>
 
-    <!-- PRIVATE BROWSER -->
-    <div class="window" id="private-browser-window" style="top: 200px; left: 300px;">
-        <div class="window-header">
-            <div class="window-title">🕵️ Private Browser <span class="private-badge">INCognito</span></div>
-            <div class="window-controls">
-                <div class="window-btn minimize" onclick="minimizeWindow('private-browser')"></div>
-                <div class="window-btn maximize" onclick="maximizeWindow('private-browser')"></div>
-                <div class="window-btn close" onclick="closeWindow('private-browser')"></div>
+    <!-- WINAMP PLAYER WINDOW -->
+    <div class="window" id="winamp-window" style="top: 200px; left: 400px; width: 400px; height: 550px;">
+        <div class="window-header" onmousedown="startDrag(event, 'winamp')">
+            <div class="window-title">
+                <span>🎵</span>
+                Winamp 2.95
             </div>
-        </div>
-        <div class="window-content">
-            <div class="history-warning">
-                ⚠️ <strong>Private Browsing</strong><br>
-                • No history saved<br>
-                • Cookies cleared on exit<br>
-                • LocalStorage not persisted<br>
-                • Tracks covered with ninja skills
-            </div>
-            <div class="browser-bar">
-                <input type="text" class="url-bar" id="private-url-bar" value="https://duckduckgo.com" placeholder="Search privately...">
-                <button class="go-btn" onclick="goToUrl('private')">Go</button>
-                <button class="burn-button" onclick="clearPrivateData()">🔥 Burn Data</button>
-            </div>
-            <iframe class="browser-frame incognito-frame" id="private-browser-frame" src="https://duckduckgo.com"></iframe>
-        </div>
-    </div>
-
-    <!-- WINAMP PLAYER -->
-    <div class="window" id="winamp-window" style="top: 250px; left: 400px; width: 300px;">
-        <div class="window-header">
-            <div class="window-title">🎵 Winamp 2.95</div>
             <div class="window-controls">
                 <div class="window-btn minimize" onclick="minimizeWindow('winamp')"></div>
-                <div class="window-btn maximize" onclick="maximizeWindow('winamp')"></div>
+                <div class="window-btn maximize" onclick="toggleMaximize('winamp')"></div>
                 <div class="window-btn close" onclick="closeWindow('winamp')"></div>
             </div>
         </div>
         <div class="window-content">
-            <div class="winamp-player" id="winamp-player">
-                <div class="winamp-titlebar">
-                    <span>Winamp 2.95</span>
-                    <span>00:00</span>
-                </div>
-                
-                <div class="winamp-controls">
-                    <div class="winamp-display" id="winamp-display">
-                        WebOS Radio - Playing: Never Gonna Give You Up
+            <div class="winamp-container">
+                <div class="winamp-player">
+                    <div class="winamp-titlebar">
+                        <span>Winamp 2.95</span>
+                        <span id="winamp-time">00:00</span>
                     </div>
-                    
-                    <div class="winamp-buttons">
-                        <div class="winamp-button" onclick="winampControl('prev')">◀◀</div>
-                        <div class="winamp-button" onclick="winampControl('play')" id="play-btn">▶</div>
-                        <div class="winamp-button" onclick="winampControl('pause')">❚❚</div>
-                        <div class="winamp-button" onclick="winampControl('stop')">■</div>
-                        <div class="winamp-button" onclick="winampControl('next')">▶▶</div>
-                    </div>
-                    
-                    <div class="winamp-eq">
-                        <div class="eq-sliders">
-                            <div class="eq-slider">
-                                <div class="eq-label">60Hz</div>
-                                <div class="eq-bar"><div class="eq-level" id="eq1" style="height: 40%;"></div></div>
+                    <div class="winamp-controls">
+                        <div class="winamp-display" id="winamp-display">
+                            WebOS Radio - Ready
+                        </div>
+                        
+                        <div class="winamp-buttons">
+                            <div class="winamp-button" onclick="winampPlayer.previousTrack()" title="Previous Track">◀◀</div>
+                            <div class="winamp-button" onclick="winampPlayer.togglePlay()" id="play-btn" title="Play/Pause">▶</div>
+                            <div class="winamp-button" onclick="winampPlayer.stop()" title="Stop">■</div>
+                            <div class="winamp-button" onclick="winampPlayer.nextTrack()" title="Next Track">▶▶</div>
+                            <div class="winamp-button" onclick="winampPlayer.toggleMute()" id="mute-btn" title="Mute">🔊</div>
+                        </div>
+                        
+                        <div class="playback-controls">
+                            <div class="time-display" id="current-time">00:00</div>
+                            <div class="progress-bar" onclick="winampPlayer.seek(event)" id="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
                             </div>
-                            <div class="eq-slider">
-                                <div class="eq-label">310Hz</div>
-                                <div class="eq-bar"><div class="eq-level" id="eq2" style="height: 60%;"></div></div>
-                            </div>
-                            <div class="eq-slider">
-                                <div class="eq-label">1kHz</div>
-                                <div class="eq-bar"><div class="eq-level" id="eq3" style="height: 80%;"></div></div>
-                            </div>
-                            <div class="eq-slider">
-                                <div class="eq-label">3kHz</div>
-                                <div class="eq-bar"><div class="eq-level" id="eq4" style="height: 70%;"></div></div>
-                            </div>
-                            <div class="eq-slider">
-                                <div class="eq-label">12kHz</div>
-                                <div class="eq-bar"><div class="eq-level" id="eq5" style="height: 50%;"></div></div>
-                            </div>
+                            <div class="time-display" id="total-time">00:00</div>
+                        </div>
+                        
+                        <div class="volume-controls">
+                            <span style="font-size: 12px;">Vol:</span>
+                            <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70" 
+                                   oninput="winampPlayer.setVolume(this.value)">
+                            <span style="font-size: 12px; min-width: 30px;" id="volume-text">70%</span>
+                        </div>
+                        
+                        <div class="visualizer" id="visualizer">
+                            <!-- Visualizer bars generated by JS -->
+                        </div>
+                        
+                        <div class="winamp-playlist" id="winamp-playlist">
+                            <!-- Playlist generated by JS -->
                         </div>
                     </div>
-                    
-                    <div class="visualizer" id="visualizer">
-                        <!-- Visualizer bars will be generated here -->
-                    </div>
-                    
-                    <div class="winamp-playlist" id="winamp-playlist">
-                        <!-- Playlist will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TERMINAL WINDOW -->
+    <div class="window" id="terminal-window" style="top: 250px; left: 500px; width: 600px; height: 400px;">
+        <div class="window-header" onmousedown="startDrag(event, 'terminal')">
+            <div class="window-title">
+                <span>💻</span>
+                Terminal
+            </div>
+            <div class="window-controls">
+                <div class="window-btn minimize" onclick="minimizeWindow('terminal')"></div>
+                <div class="window-btn maximize" onclick="toggleMaximize('terminal')"></div>
+                <div class="window-btn close" onclick="closeWindow('terminal')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-title">WebOS Terminal v1.0</div>
+                    <div class="terminal-controls">
+                        <button class="terminal-btn" onclick="terminal.clear()">Clear</button>
+                        <button class="terminal-btn" onclick="terminal.copyOutput()">Copy</button>
+                        <button class="terminal-btn" onclick="terminal.reset()">Reset</button>
                     </div>
                 </div>
+                <div class="terminal-output" id="terminal-output">
+                    <!-- Terminal output will be here -->
+                </div>
+                <input type="text" class="terminal-input" id="terminal-input" 
+                       placeholder="Type 'help' for available commands..."
+                       onkeydown="terminal.handleInput(event)">
             </div>
         </div>
     </div>
 
     <!-- TASKBAR -->
     <div class="taskbar">
-        <button class="start-btn" onclick="toggleStartMenu()">START</button>
-        <div class="taskbar-apps">
-            <div class="taskbar-app" onclick="openApp('files')">📁 Files</div>
-            <div class="taskbar-app" onclick="openApp('browser')">🌐 Browser</div>
-            <div class="taskbar-app" onclick="openApp('private-browser')">🕵️ Private</div>
-            <div class="taskbar-app" onclick="openApp('winamp')">🎵 Winamp</div>
+        <button class="start-btn" onclick="toggleStartMenu()">
+            <span>🌀</span>
+            START
+        </button>
+        
+        <div class="taskbar-apps" id="taskbar-apps">
+            <!-- Taskbar apps will be added here -->
         </div>
-        <div class="clock" id="clock">--:--:--</div>
+        
+        <div class="system-tray">
+            <div class="tray-icon" onclick="showNotification('Wi-Fi', 'Connected to WebOS Network')" title="Wi-Fi">
+                📶
+            </div>
+            <div class="tray-icon" onclick="showNotification('Volume', 'Click to adjust volume')" title="Volume">
+                🔊
+                <div class="tray-badge" id="volume-badge">70</div>
+            </div>
+            <div class="tray-icon" onclick="showNotification('Battery', 'Powered by Web Technologies')" title="Battery">
+                🔋
+            </div>
+            <div class="clock" id="clock">--:--:--</div>
+        </div>
     </div>
 
     <!-- START MENU -->
     <div class="start-menu" id="start-menu">
         <div class="start-menu-header">
-            <h3>WebOS v0.2</h3>
-            <p>Now with Winamp & Private Browsing!</p>
+            <div class="user-info">
+                <div class="user-avatar">W</div>
+                <div class="user-details">
+                    <h3>WebOS User</h3>
+                    <p>Administrator</p>
+                </div>
+            </div>
         </div>
-        <div class="start-menu-items">
-            <div class="start-item" onclick="openApp('files')">
-                <span>📁</span>
-                <div>
-                    <strong>File Explorer</strong>
-                    <p>Manage your files</p>
+        <div class="start-menu-sections">
+            <div class="start-menu-left">
+                <div class="menu-section">
+                    <h4>Applications</h4>
+                    <div class="menu-items">
+                        <div class="menu-item" onclick="openApp('files')">
+                            <div class="menu-item-icon">📁</div>
+                            <div class="menu-item-text">
+                                <h5>File Explorer</h5>
+                                <p>Browse your files</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" onclick="openApp('browser')">
+                            <div class="menu-item-icon">🌐</div>
+                            <div class="menu-item-text">
+                                <h5>Web Browser</h5>
+                                <p>Browse the internet</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" onclick="openApp('winamp')">
+                            <div class="menu-item-icon">🎵</div>
+                            <div class="menu-item-text">
+                                <h5>Winamp Player</h5>
+                                <p>Play music & audio</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" onclick="openApp('terminal')">
+                            <div class="menu-item-icon">💻</div>
+                            <div class="menu-item-text">
+                                <h5>Terminal</h5>
+                                <p>Command line interface</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-section">
+                    <h4>Documents</h4>
+                    <div class="menu-items">
+                        <div class="menu-item" onclick="showNotification('Notepad', 'Opening Notepad...')">
+                            <div class="menu-item-icon">📝</div>
+                            <div class="menu-item-text">
+                                <h5>Notes.txt</h5>
+                                <p>Last modified: Today</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" onclick="showNotification('Projects', 'Opening Projects folder...')">
+                            <div class="menu-item-icon">📁</div>
+                            <div class="menu-item-text">
+                                <h5>WebOS Projects</h5>
+                                <p>Contains 3 items</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="start-item" onclick="openApp('browser')">
-                <span>🌐</span>
-                <div>
-                    <strong>Web Browser</strong>
-                    <p>Browse the internet</p>
+            
+            <div class="start-menu-right">
+                <div class="menu-section">
+                    <h4>System</h4>
+                    <div class="menu-items">
+                        <div class="menu-item" onclick="showNotification('Settings', 'Opening System Settings...')">
+                            <div class="menu-item-icon">⚙️</div>
+                            <div class="menu-item-text">
+                                <h5>Settings</h5>
+                                <p>System configuration</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" onclick="showNotification('Help', 'Opening Help Center...')">
+                            <div class="menu-item-icon">❓</div>
+                            <div class="menu-item-text">
+                                <h5>Help & Support</h5>
+                                <p>Get help with WebOS</p>
+                            </div>
+                        </div>
+                        <div class="menu-item" onclick="showNotification('Updates', 'Checking for updates...')">
+                            <div class="menu-item-icon">🔄</div>
+                            <div class="menu-item-text">
+                                <h5>Check for Updates</h5>
+                                <p>WebOS v1.0</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="start-item" onclick="openApp('private-browser')">
-                <span>🕵️</span>
-                <div>
-                    <strong>Private Browser</strong>
-                    <p>Browse incognito</p>
-                </div>
-            </div>
-            <div class="start-item" onclick="openApp('winamp')">
-                <span>🎵</span>
-                <div>
-                    <strong>Winamp Player</strong>
-                    <p>It really whips the llama's ass!</p>
-                </div>
-            </div>
-            <div class="start-item" onclick="shutdown()">
-                <span>⏻</span>
-                <div>
-                    <strong>Shutdown</strong>
-                    <p>Turn off the system</p>
+                
+                <div class="power-options">
+                    <div class="power-btn" onclick="shutdown()">
+                        <span>⏻</span>
+                        Shut Down
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- NOTIFICATION -->
-    <div class="notification" id="notification">
-        <strong id="notif-title">Notification</strong>
-        <p id="notif-message">This is a notification</p>
+    <!-- NOTIFICATION CONTAINER -->
+    <div class="notification-container" id="notification-container">
+        <!-- Notifications will be added here dynamically -->
     </div>
 
-    <!-- AUDIO ELEMENT (HIDDEN) -->
-    <audio id="winamp-audio" preload="metadata">
-        <!-- We'll use YouTube embeds or sample audio -->
-    </audio>
+    <!-- HIDDEN AUDIO ELEMENT -->
+    <audio id="audio-player" crossorigin="anonymous"></audio>
 
     <script>
-        // === OS CORE ===
+        // ===== GLOBAL STATE =====
         const WebOS = {
-            version: '0.2.0',
-            apps: {
-                files: { open: false, minimized: false },
-                browser: { open: false, minimized: false },
-                'private-browser': { open: false, minimized: false },
-                winamp: { open: false, minimized: false },
-                terminal: { open: false, minimized: false }
+            version: '1.0.0',
+            apps: {},
+            settings: {
+                theme: 'dark',
+                volume: 70,
+                notifications: true
             },
-            files: [
-                { name: 'Documents', type: 'folder', icon: '📁' },
-                { name: 'Pictures', type: 'folder', icon: '🖼️' },
-                { name: 'Music', type: 'folder', icon: '🎵' },
-                { name: 'notes.txt', type: 'file', icon: '📝' },
-                { name: 'todo.html', type: 'file', icon: '📄' },
-                { name: 'screenshot.png', type: 'file', icon: '🖼️' }
-            ],
-            privateMode: false,
-            history: []
+            data: {
+                files: [],
+                bookmarks: [],
+                history: []
+            }
         };
 
-        // === WINAMP PLAYER ===
-        const Winamp = {
-            isPlaying: false,
-            currentTrack: 0,
-            volume: 80,
-            playlist: [
-                { title: "Never Gonna Give You Up", artist: "Rick Astley", duration: "3:32", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-                { title: "Blue Monday", artist: "New Order", duration: "4:09", url: "https://www.youtube.com/embed/FYH8DsU2WCk" },
-                { title: "Sweet Dreams", artist: "Eurythmics", duration: "3:36", url: "https://www.youtube.com/embed/qeMFqkcPYcg" },
-                { title: "Take On Me", artist: "A-ha", duration: "3:48", url: "https://www.youtube.com/embed/djV11Xbc914" },
-                { title: "Africa", artist: "TOTO", duration: "4:22", url: "https://www.youtube.com/embed/FTQbiNvZqaY" },
-                { title: "Video Killed Radio", artist: "The Buggles", duration: "4:13", url: "https://www.youtube.com/embed/W8r-tXRLazs" }
-            ],
-            init() {
+        // ===== NOTIFICATION SYSTEM =====
+        class NotificationSystem {
+            constructor() {
+                this.container = document.getElementById('notification-container');
+                this.notifications = new Set();
+            }
+
+            show(title, message, duration = 5000, type = 'info') {
+                const id = 'notif-' + Date.now() + Math.random();
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.id = id;
+                
+                const icons = {
+                    info: 'ℹ️',
+                    success: '✅',
+                    warning: '⚠️',
+                    error: '❌',
+                    winamp: '🎵',
+                    browser: '🌐',
+                    system: '⚙️'
+                };
+                
+                const icon = icons[type] || icons.info;
+                
+                notification.innerHTML = `
+                    <div class="notification-header">
+                        <div class="notification-title">
+                            <span>${icon}</span>
+                            ${title}
+                        </div>
+                        <button class="notification-close" onclick="notificationSystem.close('${id}')">×</button>
+                    </div>
+                    <div class="notification-body">${message}</div>
+                    <div class="notification-progress">
+                        <div class="notification-progress-bar"></div>
+                    </div>
+                `;
+                
+                this.container.appendChild(notification);
+                this.notifications.add(id);
+                
+                // Auto-close after duration
+                setTimeout(() => this.close(id), duration);
+                
+                return id;
+            }
+
+            close(id) {
+                const notification = document.getElementById(id);
+                if (notification) {
+                    notification.classList.add('hiding');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                        this.notifications.delete(id);
+                    }, 500);
+                }
+            }
+
+            clearAll() {
+                this.notifications.forEach(id => this.close(id));
+            }
+        }
+
+        const notificationSystem = new NotificationSystem();
+
+        function showNotification(title, message, duration = 3000, type = 'info') {
+            return notificationSystem.show(title, message, duration, type);
+        }
+
+        // ===== WINDOW MANAGEMENT =====
+        class WindowManager {
+            constructor() {
+                this.windows = {};
+                this.zIndex = 1000;
+                this.dragging = null;
+                this.resizing = null;
+                this.offset = { x: 0, y: 0 };
+                this.minimizedApps = new Set();
+                this.maximizedApps = new Set();
+            }
+
+            registerApp(appName, element) {
+                this.windows[appName] = {
+                    element: element,
+                    minimized: false,
+                    maximized: false,
+                    position: { x: 100, y: 100 },
+                    size: { width: 600, height: 400 }
+                };
+                
+                // Add to taskbar
+                this.addToTaskbar(appName);
+            }
+
+            addToTaskbar(appName) {
+                const taskbar = document.getElementById('taskbar-apps');
+                const app = document.createElement('div');
+                app.className = 'taskbar-app';
+                app.innerHTML = `<span>${this.getAppIcon(appName)}</span> ${appName}`;
+                app.onclick = () => this.toggleApp(appName);
+                taskbar.appendChild(app);
+                
+                // Store reference
+                this.windows[appName].taskbarElement = app;
+            }
+
+            getAppIcon(appName) {
+                const icons = {
+                    'files': '📁',
+                    'browser': '🌐',
+                    'winamp': '🎵',
+                    'terminal': '💻',
+                    'notepad': '📝'
+                };
+                return icons[appName] || '📄';
+            }
+
+            openApp(appName) {
+                const window = this.windows[appName];
+                if (!window) return;
+                
+                const element = document.getElementById(`${appName}-window`);
+                if (!element) return;
+                
+                // Remove minimized state
+                this.minimizedApps.delete(appName);
+                window.minimized = false;
+                
+                // Bring to front
+                this.bringToFront(appName);
+                
+                // Show window
+                element.classList.add('active');
+                
+                // Update taskbar
+                if (window.taskbarElement) {
+                    window.taskbarElement.classList.add('active');
+                }
+                
+                // Initialize app if needed
+                this.initializeApp(appName);
+                
+                showNotification('WebOS', `${appName} launched`, 2000, 'system');
+            }
+
+            initializeApp(appName) {
+                switch(appName) {
+                    case 'files':
+                        fileExplorer.loadFiles();
+                        break;
+                    case 'browser':
+                        browser.initialize();
+                        break;
+                    case 'winamp':
+                        winampPlayer.initialize();
+                        break;
+                    case 'terminal':
+                        terminal.initialize();
+                        break;
+                }
+            }
+
+            closeWindow(appName) {
+                const window = this.windows[appName];
+                if (!window) return;
+                
+                const element = document.getElementById(`${appName}-window`);
+                if (element) {
+                    element.classList.remove('active');
+                }
+                
+                // Update taskbar
+                if (window.taskbarElement) {
+                    window.taskbarElement.classList.remove('active');
+                }
+                
+                // Clean up
+                switch(appName) {
+                    case 'winamp':
+                        winampPlayer.stop();
+                        break;
+                }
+                
+                showNotification('WebOS', `${appName} closed`, 2000, 'system');
+            }
+
+            minimizeWindow(appName) {
+                const window = this.windows[appName];
+                if (!window) return;
+                
+                const element = document.getElementById(`${appName}-window`);
+                if (element) {
+                    element.classList.remove('active');
+                }
+                
+                window.minimized = true;
+                this.minimizedApps.add(appName);
+                
+                // Update taskbar
+                if (window.taskbarElement) {
+                    window.taskbarElement.classList.add('active');
+                }
+            }
+
+            toggleMaximize(appName) {
+                const window = this.windows[appName];
+                if (!window) return;
+                
+                const element = document.getElementById(`${appName}-window`);
+                if (!element) return;
+                
+                if (window.maximized) {
+                    // Restore
+                    element.style.width = window.size.width + 'px';
+                    element.style.height = window.size.height + 'px';
+                    element.style.top = window.position.y + 'px';
+                    element.style.left = window.position.x + 'px';
+                    window.maximized = false;
+                    this.maximizedApps.delete(appName);
+                } else {
+                    // Maximize
+                    window.size = {
+                        width: element.offsetWidth,
+                        height: element.offsetHeight
+                    };
+                    window.position = {
+                        x: parseInt(element.style.left) || 100,
+                        y: parseInt(element.style.top) || 100
+                    };
+                    
+                    element.style.width = '90vw';
+                    element.style.height = '80vh';
+                    element.style.top = '5vh';
+                    element.style.left = '5vw';
+                    window.maximized = true;
+                    this.maximizedApps.add(appName);
+                }
+            }
+
+            toggleApp(appName) {
+                const window = this.windows[appName];
+                if (!window) return;
+                
+                const element = document.getElementById(`${appName}-window`);
+                if (!element) return;
+                
+                if (window.minimized || !element.classList.contains('active')) {
+                    this.openApp(appName);
+                } else {
+                    this.minimizeWindow(appName);
+                }
+            }
+
+            bringToFront(appName) {
+                const element = document.getElementById(`${appName}-window`);
+                if (element) {
+                    this.zIndex++;
+                    element.style.zIndex = this.zIndex;
+                }
+            }
+
+            startDrag(event, appName) {
+                if (event.target.closest('.window-controls')) return;
+                
+                const element = document.getElementById(`${appName}-window`);
+                if (!element) return;
+                
+                this.dragging = {
+                    element: element,
+                    appName: appName,
+                    startX: event.clientX,
+                    startY: event.clientY,
+                    startLeft: parseInt(element.style.left) || 100,
+                    startTop: parseInt(element.style.top) || 100
+                };
+                
+                element.classList.add('dragging');
+                this.bringToFront(appName);
+                
+                event.preventDefault();
+            }
+
+            handleDrag(event) {
+                if (!this.dragging) return;
+                
+                const dx = event.clientX - this.dragging.startX;
+                const dy = event.clientY - this.dragging.startY;
+                
+                const newLeft = this.dragging.startLeft + dx;
+                const newTop = this.dragging.startTop + dy;
+                
+                this.dragging.element.style.left = Math.max(0, newLeft) + 'px';
+                this.dragging.element.style.top = Math.max(0, newTop) + 'px';
+            }
+
+            stopDrag() {
+                if (this.dragging) {
+                    this.dragging.element.classList.remove('dragging');
+                    this.dragging = null;
+                }
+            }
+        }
+
+        const windowManager = new WindowManager();
+
+        // ===== FILE EXPLORER =====
+        class FileExplorer {
+            constructor() {
+                this.currentPath = 'C:\\Users\\WebOS\\Desktop';
+                this.history = [];
+                this.historyIndex = -1;
+                this.files = [
+                    { name: 'Documents', type: 'folder', size: '2.4 MB', icon: '📁', modified: '2024-01-15' },
+                    { name: 'Pictures', type: 'folder', size: '15.7 MB', icon: '🖼️', modified: '2024-01-14' },
+                    { name: 'Music', type: 'folder', size: '89.3 MB', icon: '🎵', modified: '2024-01-13' },
+                    { name: 'Downloads', type: 'folder', size: '3.2 MB', icon: '📥', modified: '2024-01-15' },
+                    { name: 'notes.txt', type: 'file', size: '4.2 KB', icon: '📝', modified: '2024-01-15' },
+                    { name: 'todo.html', type: 'file', size: '12.8 KB', icon: '📄', modified: '2024-01-14' },
+                    { name: 'screenshot.png', type: 'file', size: '1.2 MB', icon: '🖼️', modified: '2024-01-13' },
+                    { name: 'presentation.ppt', type: 'file', size: '3.4 MB', icon: '📊', modified: '2024-01-12' },
+                    { name: 'budget.xlsx', type: 'file', size: '256 KB', icon: '📈', modified: '2024-01-11' },
+                    { name: 'readme.md', type: 'file', size: '2.1 KB', icon: '📋', modified: '2024-01-10' }
+                ];
+            }
+
+            loadFiles() {
+                const grid = document.getElementById('files-grid');
+                const pathElement = document.getElementById('current-path');
+                
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+                pathElement.textContent = this.currentPath;
+                
+                this.files.forEach(file => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file-item';
+                    fileElement.innerHTML = `
+                        <div class="file-icon">${file.icon}</div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${file.type} • ${file.size}</div>
+                    `;
+                    
+                    fileElement.onclick = () => {
+                        if (file.type === 'folder') {
+                            this.openFolder(file.name);
+                        } else {
+                            this.openFile(file);
+                        }
+                    };
+                    
+                    fileElement.ondblclick = () => {
+                        if (file.type === 'folder') {
+                            this.openFolder(file.name);
+                        }
+                    };
+                    
+                    grid.appendChild(fileElement);
+                });
+            }
+
+            openFolder(folderName) {
+                this.history.push(this.currentPath);
+                this.historyIndex++;
+                this.currentPath += '\\' + folderName;
+                this.loadFiles();
+                showNotification('File Explorer', `Opened folder: ${folderName}`, 2000, 'info');
+            }
+
+            openFile(file) {
+                showNotification('File Explorer', `Opening: ${file.name}`, 2000, 'info');
+                
+                // Simulate file opening based on type
+                switch(file.name.split('.').pop()) {
+                    case 'txt':
+                    case 'md':
+                        showNotification('Notepad', `Opening ${file.name} in text editor...`, 3000, 'info');
+                        break;
+                    case 'html':
+                        browser.loadUrl(`file://${this.currentPath}/${file.name}`);
+                        windowManager.openApp('browser');
+                        break;
+                    case 'png':
+                    case 'jpg':
+                        showNotification('Photos', `Opening image: ${file.name}`, 3000, 'info');
+                        break;
+                    default:
+                        showNotification('File Explorer', `No application configured for .${file.name.split('.').pop()} files`, 3000, 'warning');
+                }
+            }
+
+            goBack() {
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.currentPath = this.history[this.historyIndex];
+                    this.loadFiles();
+                }
+            }
+
+            goForward() {
+                if (this.historyIndex < this.history.length - 1) {
+                    this.historyIndex++;
+                    this.currentPath = this.history[this.historyIndex];
+                    this.loadFiles();
+                }
+            }
+
+            goUp() {
+                const parts = this.currentPath.split('\\');
+                if (parts.length > 3) {
+                    parts.pop();
+                    this.currentPath = parts.join('\\');
+                    this.loadFiles();
+                }
+            }
+
+            refresh() {
+                this.loadFiles();
+                showNotification('File Explorer', 'Refreshed', 1000, 'info');
+            }
+
+            createFolder() {
+                const folderName = prompt('Enter folder name:', 'New Folder');
+                if (folderName && folderName.trim()) {
+                    this.files.unshift({
+                        name: folderName.trim(),
+                        type: 'folder',
+                        size: '0 bytes',
+                        icon: '📁',
+                        modified: new Date().toISOString().split('T')[0]
+                    });
+                    this.loadFiles();
+                    showNotification('File Explorer', `Created folder: ${folderName}`, 2000, 'success');
+                }
+            }
+        }
+
+        const fileExplorer = new FileExplorer();
+
+        // ===== WEB BROWSER =====
+        class WebBrowser {
+            constructor() {
+                this.history = [];
+                this.currentIndex = -1;
+                this.homePage = 'https://lite.duckduckgo.com/lite/';
+                this.isLoading = false;
+            }
+
+            initialize() {
+                const frame = document.getElementById('browser-frame');
+                const urlBar = document.getElementById('url-bar');
+                const backBtn = document.getElementById('back-btn');
+                const forwardBtn = document.getElementById('forward-btn');
+                
+                if (!frame) return;
+                
+                frame.onload = () => {
+                    this.isLoading = false;
+                    this.updateNavButtons();
+                    showNotification('Browser', 'Page loaded', 1500, 'browser');
+                };
+                
+                frame.onerror = () => {
+                    this.isLoading = false;
+                    showNotification('Browser Error', 'Failed to load page. Site may block iframes.', 3000, 'error');
+                };
+                
+                // Load home page if not already loaded
+                if (frame.src !== this.homePage && !frame.src) {
+                    this.loadUrl(this.homePage);
+                }
+                
+                this.updateNavButtons();
+            }
+
+            loadUrl(url) {
+                const frame = document.getElementById('browser-frame');
+                const urlBar = document.getElementById('url-bar');
+                
+                if (!frame || !urlBar) return;
+                
+                let finalUrl = url.trim();
+                
+                // Add protocol if missing
+                if (!finalUrl.match(/^https?:\/\//)) {
+                    // Check if it's a search query
+                    if (finalUrl.includes(' ') || !finalUrl.includes('.')) {
+                        finalUrl = `https://lite.duckduckgo.com/lite/?q=${encodeURIComponent(finalUrl)}`;
+                    } else {
+                        finalUrl = 'https://' + finalUrl;
+                    }
+                }
+                
+                this.isLoading = true;
+                frame.src = finalUrl;
+                urlBar.value = finalUrl;
+                
+                // Add to history
+                if (this.history[this.currentIndex] !== finalUrl) {
+                    this.history = this.history.slice(0, this.currentIndex + 1);
+                    this.history.push(finalUrl);
+                    this.currentIndex++;
+                }
+                
+                this.updateNavButtons();
+                showNotification('Browser', `Loading: ${finalUrl}`, 2000, 'browser');
+            }
+
+            goToUrl() {
+                const urlBar = document.getElementById('url-bar');
+                if (urlBar && urlBar.value) {
+                    this.loadUrl(urlBar.value);
+                }
+            }
+
+            goBack() {
+                if (this.currentIndex > 0) {
+                    this.currentIndex--;
+                    const url = this.history[this.currentIndex];
+                    this.loadUrl(url);
+                }
+            }
+
+            goForward() {
+                if (this.currentIndex < this.history.length - 1) {
+                    this.currentIndex++;
+                    const url = this.history[this.currentIndex];
+                    this.loadUrl(url);
+                }
+            }
+
+            refresh() {
+                const frame = document.getElementById('browser-frame');
+                if (frame) {
+                    frame.src = frame.src;
+                    this.isLoading = true;
+                    showNotification('Browser', 'Refreshing page...', 1500, 'browser');
+                }
+            }
+
+            goHome() {
+                this.loadUrl(this.homePage);
+            }
+
+            updateNavButtons() {
+                const backBtn = document.getElementById('back-btn');
+                const forwardBtn = document.getElementById('forward-btn');
+                
+                if (backBtn) {
+                    backBtn.disabled = this.currentIndex <= 0;
+                }
+                if (forwardBtn) {
+                    forwardBtn.disabled = this.currentIndex >= this.history.length - 1;
+                }
+            }
+        }
+
+        const browser = new WebBrowser();
+
+        // ===== WINAMP PLAYER =====
+        class WinampPlayer {
+            constructor() {
+                this.audio = document.getElementById('audio-player');
+                this.currentTrack = 0;
+                this.isPlaying = false;
+                this.volume = 0.7;
+                this.playlist = [
+                    {
+                        title: "Lo-fi Study Beat",
+                        artist: "Chillhop Music",
+                        url: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_8c9d5d2b98.mp3?filename=lofi-study-112191.mp3",
+                        duration: 112
+                    },
+                    {
+                        title: "Morning Garden",
+                        artist: "Acoustic Motivation",
+                        url: "https://cdn.pixabay.com/download/audio/2021/10/25/audio_5b73548728.mp3?filename=acoustic-motivation-11290.mp3",
+                        duration: 97
+                    },
+                    {
+                        title: "Jazz Relax",
+                        artist: "Piano Jazz",
+                        url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d5e6e7d156.mp3?filename=relaxing-jazz-piano-11139.mp3",
+                        duration: 117
+                    },
+                    {
+                        title: "Synthwave Drive",
+                        artist: "Retro Wave",
+                        url: "https://cdn.pixabay.com/download/audio/2022/08/25/audio_f8d7c6b73c.mp3?filename=synthwave-123316.mp3",
+                        duration: 125
+                    },
+                    {
+                        title: "Ambient Space",
+                        artist: "Cosmic Sounds",
+                        url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_4f0d2d6c7b.mp3?filename=ambient-space-11135.mp3",
+                        duration: 135
+                    }
+                ];
+                this.visualizerInterval = null;
+            }
+
+            initialize() {
+                this.audio.volume = this.volume;
                 this.updatePlaylist();
+                this.updateDisplay("Ready to play! Select a track.");
                 this.createVisualizer();
-                this.updateEQ();
-                this.updateDisplay();
-            },
+                this.updateVolumeDisplay();
+                
+                // Set up audio events
+                this.audio.addEventListener('timeupdate', () => this.updateProgress());
+                this.audio.addEventListener('ended', () => this.nextTrack());
+                this.audio.addEventListener('error', (e) => {
+                    console.error('Audio error:', e);
+                    showNotification('Winamp Error', 'Failed to play audio track', 3000, 'error');
+                });
+                
+                // Start visualizer animation
+                this.startVisualizer();
+            }
+
             updatePlaylist() {
-                const playlist = document.getElementById('winamp-playlist');
-                playlist.innerHTML = '';
+                const container = document.getElementById('winamp-playlist');
+                if (!container) return;
+                
+                container.innerHTML = '';
                 
                 this.playlist.forEach((track, index) => {
+                    const minutes = Math.floor(track.duration / 60);
+                    const seconds = track.duration % 60;
+                    const durationStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    
                     const item = document.createElement('div');
-                    item.className = `playlist-item ${index === this.currentTrack ? 'playing' : ''}`;
+                    item.className = 'playlist-item' + (index === this.currentTrack ? ' playing' : '');
                     item.innerHTML = `
-                        <div>${index + 1}. ${track.title}</div>
-                        <small>${track.artist} - ${track.duration}</small>
+                        <div>
+                            <strong>${index + 1}. ${track.title}</strong><br>
+                            <small>${track.artist}</small>
+                        </div>
+                        <div class="track-duration">${durationStr}</div>
                     `;
-                    item.onclick = () => {
-                        this.currentTrack = index;
-                        this.play();
-                        this.updatePlaylist();
-                    };
-                    playlist.appendChild(item);
+                    
+                    item.onclick = () => this.playTrack(index);
+                    
+                    container.appendChild(item);
                 });
-            },
+            }
+
+            playTrack(index) {
+                if (index < 0 || index >= this.playlist.length) return;
+                
+                this.currentTrack = index;
+                const track = this.playlist[index];
+                
+                this.audio.src = track.url;
+                this.audio.load();
+                
+                this.audio.play().then(() => {
+                    this.isPlaying = true;
+                    document.getElementById('play-btn').textContent = '❚❚';
+                    this.updateDisplay(`▶ ${track.title} - ${track.artist}`);
+                    this.updatePlaylist();
+                    this.updateTimeDisplay();
+                    showNotification('Winamp', `Now playing: ${track.title}`, 3000, 'winamp');
+                }).catch(error => {
+                    console.error('Playback failed:', error);
+                    showNotification('Winamp Error', 
+                        'Cannot play track. Some browsers restrict autoplay. Click play button.', 
+                        4000, 'error');
+                });
+            }
+
+            togglePlay() {
+                if (this.isPlaying) {
+                    this.audio.pause();
+                    this.isPlaying = false;
+                    document.getElementById('play-btn').textContent = '▶';
+                    this.updateDisplay('⏸ Paused');
+                } else {
+                    if (this.audio.src) {
+                        this.audio.play();
+                        this.isPlaying = true;
+                        document.getElementById('play-btn').textContent = '❚❚';
+                        const track = this.playlist[this.currentTrack];
+                        this.updateDisplay(`▶ ${track.title}`);
+                    } else {
+                        // No track selected, play first one
+                        this.playTrack(0);
+                    }
+                }
+            }
+
+            stop() {
+                this.audio.pause();
+                this.audio.currentTime = 0;
+                this.isPlaying = false;
+                document.getElementById('play-btn').textContent = '▶';
+                this.updateDisplay('■ Stopped');
+                this.updateProgress();
+            }
+
+            nextTrack() {
+                const nextIndex = (this.currentTrack + 1) % this.playlist.length;
+                this.playTrack(nextIndex);
+            }
+
+            previousTrack() {
+                const prevIndex = this.currentTrack === 0 ? 
+                    this.playlist.length - 1 : this.currentTrack - 1;
+                this.playTrack(prevIndex);
+            }
+
+            setVolume(value) {
+                this.volume = value / 100;
+                this.audio.volume = this.volume;
+                this.updateVolumeDisplay();
+                
+                if (value == 0) {
+                    document.getElementById('mute-btn').textContent = '🔇';
+                } else {
+                    document.getElementById('mute-btn').textContent = '🔊';
+                }
+            }
+
+            toggleMute() {
+                this.audio.muted = !this.audio.muted;
+                document.getElementById('mute-btn').textContent = 
+                    this.audio.muted ? '🔇' : '🔊';
+            }
+
+            seek(event) {
+                const progressBar = document.getElementById('progress-bar');
+                const rect = progressBar.getBoundingClientRect();
+                const percent = (event.clientX - rect.left) / rect.width;
+                this.audio.currentTime = percent * this.audio.duration;
+            }
+
+            updateProgress() {
+                const current = this.audio.currentTime;
+                const duration = this.audio.duration || 0;
+                
+                if (duration > 0) {
+                    const percent = (current / duration) * 100;
+                    document.getElementById('progress-fill').style.width = percent + '%';
+                    
+                    this.updateTimeDisplay();
+                }
+            }
+
+            updateTimeDisplay() {
+                const current = this.audio.currentTime;
+                const duration = this.audio.duration || 0;
+                
+                const currentMinutes = Math.floor(current / 60);
+                const currentSeconds = Math.floor(current % 60);
+                const durationMinutes = Math.floor(duration / 60);
+                const durationSeconds = Math.floor(duration % 60);
+                
+                document.getElementById('current-time').textContent = 
+                    `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
+                document.getElementById('total-time').textContent = 
+                    `${durationMinutes}:${durationSeconds.toString().padStart(2, '0')}`;
+                document.getElementById('winamp-time').textContent = 
+                    `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
+            }
+
+            updateVolumeDisplay() {
+                const volumeText = document.getElementById('volume-text');
+                const volumeBadge = document.getElementById('volume-badge');
+                const volume = Math.round(this.volume * 100);
+                
+                if (volumeText) volumeText.textContent = volume + '%';
+                if (volumeBadge) volumeBadge.textContent = volume;
+            }
+
+            updateDisplay(text) {
+                const display = document.getElementById('winamp-display');
+                if (display) display.textContent = text;
+            }
+
             createVisualizer() {
                 const viz = document.getElementById('visualizer');
+                if (!viz) return;
+                
                 viz.innerHTML = '';
                 for (let i = 0; i < 32; i++) {
                     const bar = document.createElement('div');
                     bar.className = 'v-bar';
-                    bar.style.height = `${Math.random() * 100}%`;
+                    bar.style.height = Math.random() * 100 + '%';
                     viz.appendChild(bar);
                 }
+            }
+
+            startVisualizer() {
+                if (this.visualizerInterval) {
+                    clearInterval(this.visualizerInterval);
+                }
                 
-                // Animate visualizer if playing
-                setInterval(() => {
+                this.visualizerInterval = setInterval(() => {
                     if (!this.isPlaying) return;
                     
-                    const bars = document.querySelectorAll('.v-bar');
+                    const bars = document.querySelectorAll('#visualizer .v-bar');
                     bars.forEach(bar => {
                         const newHeight = Math.random() * 100;
-                        bar.style.height = `${newHeight}%`;
-                        bar.style.background = `hsl(${120 + newHeight * 0.5}, 100%, 50%)`;
+                        bar.style.height = newHeight + '%';
+                        
+                        // Add color variation based on height
+                        const hue = 120 + newHeight * 0.5;
+                        bar.style.background = `hsl(${hue}, 100%, 50%)`;
+                        bar.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px hsl(${hue}, 100%, 50%)`;
                     });
                 }, 100);
-            },
-            updateEQ() {
-                // Random EQ movement
-                setInterval(() => {
-                    for (let i = 1; i <= 5; i++) {
-                        const eq = document.getElementById(`eq${i}`);
-                        const current = parseInt(eq.style.height) || 50;
-                        const change = (Math.random() - 0.5) * 20;
-                        const newHeight = Math.max(10, Math.min(100, current + change));
-                        eq.style.height = `${newHeight}%`;
+            }
+        }
+
+        const winampPlayer = new WinampPlayer();
+
+        // ===== TERMINAL =====
+        class Terminal {
+            constructor() {
+                this.history = [];
+                this.historyIndex = -1;
+                this.commands = {
+                    help: this.showHelp.bind(this),
+                    clear: this.clear.bind(this),
+                    date: this.showDate.bind(this),
+                    time: this.showTime.bind(this),
+                    ls: this.listFiles.bind(this),
+                    pwd: this.showPath.bind(this),
+                    echo: this.echo.bind(this),
+                    about: this.showAbout.bind(this),
+                    reboot: this.reboot.bind(this),
+                    shutdown: this.shutdown.bind(this)
+                };
+            }
+
+            initialize() {
+                this.outputElement = document.getElementById('terminal-output');
+                this.inputElement = document.getElementById('terminal-input');
+                
+                if (this.outputElement && !this.outputElement.innerHTML.trim()) {
+                    this.clear();
+                    this.printLine('Welcome to WebOS Terminal v1.0');
+                    this.printLine('Type "help" for available commands');
+                    this.printLine('');
+                }
+                
+                if (this.inputElement) {
+                    this.inputElement.focus();
+                }
+            }
+
+            handleInput(event) {
+                if (event.key === 'Enter') {
+                    const command = this.inputElement.value.trim();
+                    this.inputElement.value = '';
+                    
+                    if (command) {
+                        this.history.push(command);
+                        this.historyIndex = this.history.length;
+                        this.executeCommand(command);
                     }
-                }, 300);
-            },
-            updateDisplay() {
-                const track = this.playlist[this.currentTrack];
-                const display = document.getElementById('winamp-display');
-                const status = this.isPlaying ? '▶ Playing:' : '⏸ Paused:';
-                display.textContent = `${status} ${track.title} - ${track.artist}`;
-            },
-            play() {
-                this.isPlaying = true;
-                document.getElementById('play-btn').textContent = '❚❚';
-                this.updateDisplay();
-                showNotification('Winamp', `Playing: ${this.playlist[this.currentTrack].title}`);
-                
-                // In a real version, you'd play actual audio here
-                // For now, we'll just show a YouTube embed
-                if (this.playlist[this.currentTrack].url) {
-                    // Could embed YouTube player here
+                } else if (event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    if (this.historyIndex > 0) {
+                        this.historyIndex--;
+                        this.inputElement.value = this.history[this.historyIndex];
+                    }
+                } else if (event.key === 'ArrowDown') {
+                    event.preventDefault();
+                    if (this.historyIndex < this.history.length - 1) {
+                        this.historyIndex++;
+                        this.inputElement.value = this.history[this.historyIndex];
+                    } else {
+                        this.historyIndex = this.history.length;
+                        this.inputElement.value = '';
+                    }
                 }
-            },
-            pause() {
-                this.isPlaying = false;
-                document.getElementById('play-btn').textContent = '▶';
-                this.updateDisplay();
-            },
-            stop() {
-                this.isPlaying = false;
-                document.getElementById('play-btn').textContent = '▶';
-                this.updateDisplay();
-            },
-            next() {
-                this.currentTrack = (this.currentTrack + 1) % this.playlist.length;
-                if (this.isPlaying) this.play();
-                this.updatePlaylist();
-            },
-            prev() {
-                this.currentTrack = this.currentTrack === 0 ? this.playlist.length - 1 : this.currentTrack - 1;
-                if (this.isPlaying) this.play();
-                this.updatePlaylist();
             }
-        };
 
-        function winampControl(action) {
-            switch(action) {
-                case 'play': Winamp.play(); break;
-                case 'pause': Winamp.pause(); break;
-                case 'stop': Winamp.stop(); break;
-                case 'next': Winamp.next(); break;
-                case 'prev': Winamp.prev(); break;
+            executeCommand(command) {
+                this.printLine(`> ${command}`);
+                
+                const parts = command.split(' ');
+                const cmd = parts[0].toLowerCase();
+                const args = parts.slice(1);
+                
+                if (this.commands[cmd]) {
+                    this.commands[cmd](args);
+                } else {
+                    this.printLine(`Command not found: ${cmd}`);
+                    this.printLine('Type "help" for available commands');
+                }
+            }
+
+            showHelp() {
+                this.printLine('Available commands:');
+                this.printLine('  help        - Show this help message');
+                this.printLine('  clear       - Clear terminal screen');
+                this.printLine('  date        - Show current date');
+                this.printLine('  time        - Show current time');
+                this.printLine('  ls          - List files in current directory');
+                this.printLine('  pwd         - Print working directory');
+                this.printLine('  echo [text] - Echo back text');
+                this.printLine('  about       - About WebOS');
+                this.printLine('  reboot      - Reboot the system (simulated)');
+                this.printLine('  shutdown    - Shutdown the system');
+            }
+
+            clear() {
+                if (this.outputElement) {
+                    this.outputElement.innerHTML = '';
+                }
+            }
+
+            showDate() {
+                const now = new Date();
+                this.printLine(now.toDateString());
+            }
+
+            showTime() {
+                const now = new Date();
+                this.printLine(now.toLocaleTimeString());
+            }
+
+            listFiles() {
+                const files = [
+                    'Desktop/',
+                    'Documents/',
+                    'Downloads/',
+                    'Music/',
+                    'Pictures/',
+                    'notes.txt',
+                    'todo.md',
+                    'webos_project/'
+                ];
+                
+                files.forEach(file => {
+                    this.printLine(file);
+                });
+            }
+
+            showPath() {
+                this.printLine('/home/webos');
+            }
+
+            echo(args) {
+                this.printLine(args.join(' '));
+            }
+
+            showAbout() {
+                this.printLine('WebOS v1.0 - A web-based operating system');
+                this.printLine('Built with HTML, CSS, and JavaScript');
+                this.printLine('Created as a learning project');
+            }
+
+            reboot() {
+                this.printLine('Rebooting system...');
+                setTimeout(() => {
+                    this.clear();
+                    this.printLine('System rebooted successfully!');
+                    this.printLine('Welcome back to WebOS Terminal');
+                    showNotification('System', 'System rebooted', 3000, 'system');
+                }, 1000);
+            }
+
+            shutdown() {
+                this.printLine('Shutting down system...');
+                setTimeout(() => {
+                    windowManager.closeWindow('terminal');
+                    showNotification('System', 'Terminal session ended', 3000, 'system');
+                }, 1000);
+            }
+
+            printLine(text) {
+                if (this.outputElement) {
+                    const line = document.createElement('div');
+                    line.className = 'terminal-line';
+                    line.textContent = text;
+                    this.outputElement.appendChild(line);
+                    this.outputElement.scrollTop = this.outputElement.scrollHeight;
+                }
+            }
+
+            copyOutput() {
+                const text = this.outputElement.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Terminal', 'Output copied to clipboard', 2000, 'success');
+                });
+            }
+
+            reset() {
+                this.clear();
+                this.initialize();
             }
         }
 
-        // === PRIVATE BROWSER ===
-        function goToUrl(mode = 'standard') {
-            let url, frame;
-            
-            if (mode === 'private') {
-                url = document.getElementById('private-url-bar').value;
-                frame = document.getElementById('private-browser-frame');
-                WebOS.privateMode = true;
-                
-                // Don't save history in private mode
-                if (!url.startsWith('http')) {
-                    url = 'https://' + url;
-                    document.getElementById('private-url-bar').value = url;
-                }
-                
-                showNotification('Private Browser', 'Browsing incognito - no history saved');
-            } else {
-                url = document.getElementById('url-bar').value;
-                frame = document.getElementById('browser-frame');
-                WebOS.privateMode = false;
-                
-                // Save to history
-                if (url && !url.startsWith('http')) {
-                    url = 'https://' + url;
-                    document.getElementById('url-bar').value = url;
-                }
-                
-                WebOS.history.push({ url, timestamp: new Date() });
-            }
-            
-            try {
-                frame.src = url;
-            } catch (e) {
-                showNotification('Browser Error', 'Cannot navigate to that URL');
-            }
-        }
+        const terminal = new Terminal();
 
-        function clearPrivateData() {
-            const frame = document.getElementById('private-browser-frame');
-            frame.src = 'about:blank';
-            document.getElementById('private-url-bar').value = 'https://duckduckgo.com';
-            
-            // Clear any stored data
-            localStorage.removeItem('privateData');
-            sessionStorage.clear();
-            
-            // Fun animation
-            const warning = document.querySelector('.history-warning');
-            warning.innerHTML = '🔥 DATA BURNED! 🔥<br>All traces eliminated. You are a ghost.';
-            warning.style.background = 'rgba(255, 100, 100, 0.3)';
-            warning.style.borderColor = '#ff4444';
-            
-            setTimeout(() => {
-                warning.innerHTML = '⚠️ <strong>Private Browsing</strong><br>• No history saved<br>• Cookies cleared on exit<br>• LocalStorage not persisted<br>• Tracks covered with ninja skills';
-                warning.style.background = '';
-                warning.style.borderColor = '';
-            }, 2000);
-            
-            showNotification('Private Browser', 'All browsing data cleared!');
-        }
-
-        // === APP MANAGEMENT ===
+        // ===== SYSTEM FUNCTIONS =====
         function openApp(appName) {
-            const window = document.getElementById(`${appName}-window`);
-            WebOS.apps[appName].open = true;
-            WebOS.apps[appName].minimized = false;
-            
-            window.classList.add('active');
-            
-            // Bring to front
-            document.querySelectorAll('.window').forEach(w => {
-                w.style.zIndex = '100';
-            });
-            window.style.zIndex = '200';
-            
-            closeStartMenu();
-            
-            // Special initialization
-            if (appName === 'files') initFileExplorer();
-            if (appName === 'winamp') Winamp.init();
-            
-            showNotification('WebOS', `${appName.charAt(0).toUpperCase() + appName.slice(1)} launched`);
+            windowManager.openApp(appName);
         }
 
         function closeWindow(appName) {
-            const window = document.getElementById(`${appName}-window`);
-            window.classList.remove('active');
-            WebOS.apps[appName].open = false;
-            
-            // Clear private browser data on close
-            if (appName === 'private-browser') {
-                clearPrivateData();
-            }
+            windowManager.closeWindow(appName);
         }
 
         function minimizeWindow(appName) {
-            const window = document.getElementById(`${appName}-window`);
-            window.classList.remove('active');
-            WebOS.apps[appName].minimized = true;
+            windowManager.minimizeWindow(appName);
         }
 
-        function maximizeWindow(appName) {
-            const window = document.getElementById(`${appName}-window`);
-            window.style.width = '90vw';
-            window.style.height = '80vh';
-            window.style.top = '50px';
-            window.style.left = '50px';
+        function toggleMaximize(appName) {
+            windowManager.toggleMaximize(appName);
         }
 
-        // === FILE EXPLORER ===
-        function initFileExplorer() {
-            const grid = document.getElementById('files-grid');
-            grid.innerHTML = '';
-            
-            WebOS.files.forEach(file => {
-                const fileEl = document.createElement('div');
-                fileEl.className = 'file-item';
-                fileEl.innerHTML = `
-                    <div style="font-size: 32px; margin-bottom: 10px;">${file.icon}</div>
-                    <div>${file.name}</div>
-                    <small>${file.type}</small>
-                `;
-                fileEl.onclick = () => {
-                    showNotification('File Explorer', `Opening ${file.name}`);
-                };
-                grid.appendChild(fileEl);
-            });
-        }
-
-        // === CLOCK ===
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString();
-            const date = now.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-            document.getElementById('clock').textContent = `${date} ${time}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // === START MENU ===
         function toggleStartMenu() {
             const menu = document.getElementById('start-menu');
             menu.classList.toggle('active');
         }
 
-        function closeStartMenu() {
-            document.getElementById('start-menu').classList.remove('active');
+        function startDrag(event, appName) {
+            windowManager.startDrag(event, appName);
         }
 
-        // === NOTIFICATIONS ===
-        function showNotification(title, message) {
-            const notif = document.getElementById('notification');
-            document.getElementById('notif-title').textContent = title;
-            document.getElementById('notif-message').textContent = message;
-            
-            notif.style.display = 'block';
-            
-            setTimeout(() => {
-                notif.style.display = 'none';
-            }, 3000);
-        }
-
-        // === SHUTDOWN ===
         function shutdown() {
-            showNotification('System', 'Shutting down WebOS...');
+            showNotification('System', 'Shutting down WebOS...', 2000, 'system');
+            
+            // Create shutdown screen
             document.body.innerHTML = `
                 <div style="
-                    background: #1a1a2e;
+                    background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
                     height: 100vh;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
                     color: white;
-                    font-family: monospace;
-                    flex-direction: column;
+                    font-family: 'Segoe UI', sans-serif;
+                    text-align: center;
                 ">
-                    <h1 style="color: #4cc9f0;">WebOS v0.2</h1>
-                    <p>Featuring Winamp & Private Browsing!</p>
-                    <p><button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4cc9f0; border: none; border-radius: 5px; color: white; cursor: pointer;">Restart</button></p>
+                    <div style="font-size: 72px; margin-bottom: 30px;">🌀</div>
+                    <h1 style="font-size: 48px; margin-bottom: 20px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WebOS</h1>
+                    <p style="font-size: 20px; margin-bottom: 40px; opacity: 0.8;">v1.0 - Shutting down...</p>
+                    <div style="width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 50px;">
+                        <div id="shutdown-progress" style="height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); width: 0%; transition: width 3s;"></div>
+                    </div>
+                    <p style="opacity: 0.6; margin-bottom: 30px;">It's now safe to turn off your browser</p>
+                    <button onclick="location.reload()" style="
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border: none;
+                        border-radius: 12px;
+                        padding: 15px 40px;
+                        color: white;
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+                    ">
+                        Restart WebOS
+                    </button>
                 </div>
             `;
+            
+            // Animate progress bar
+            setTimeout(() => {
+                const progress = document.getElementById('shutdown-progress');
+                if (progress) {
+                    progress.style.width = '100%';
+                }
+            }, 100);
         }
 
-        // === INITIALIZE ===
-        document.addEventListener('DOMContentLoaded', () => {
-            initFileExplorer();
-            showNotification('WebOS v0.2', 'Now with Winamp & Private Browsing!');
+        // ===== CLOCK =====
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            const date = now.toLocaleDateString('en-US', { 
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = `${date} ${time}`;
+            }
+        }
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Register apps with window manager
+            const apps = ['files', 'browser', 'winamp', 'terminal'];
+            apps.forEach(appName => {
+                const element = document.getElementById(`${appName}-window`);
+                if (element) {
+                    windowManager.registerApp(appName, element);
+                }
+            });
+            
+            // Set up drag and drop
+            document.addEventListener('mousemove', (e) => windowManager.handleDrag(e));
+            document.addEventListener('mouseup', () => windowManager.stopDrag());
+            
+            // Set up clock
+            updateClock();
+            setInterval(updateClock, 1000);
             
             // Close start menu when clicking outside
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.start-menu') && !e.target.closest('.start-btn')) {
-                    closeStartMenu();
+                const menu = document.getElementById('start-menu');
+                const startBtn = document.querySelector('.start-btn');
+                
+                if (menu && menu.classList.contains('active') && 
+                    !menu.contains(e.target) && 
+                    !startBtn.contains(e.target)) {
+                    menu.classList.remove('active');
                 }
             });
+            
+            // Welcome notification
+            setTimeout(() => {
+                showNotification(
+                    'Welcome to WebOS v1.0',
+                    'Your complete web-based operating system is ready!',
+                    5000,
+                    'system'
+                );
+            }, 1000);
+            
+            // Initialize taskbar apps
+            const taskbarApps = document.querySelectorAll('.taskbar-app');
+            taskbarApps.forEach(app => {
+                app.addEventListener('click', function() {
+                    const appName = this.textContent.trim().replace(/[^\w\s]/gi, '').trim();
+                    windowManager.toggleApp(appName.toLowerCase());
+                });
+            });
+            
+            // Initialize browser URL bar
+            const urlBar = document.getElementById('url-bar');
+            if (urlBar) {
+                urlBar.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        browser.goToUrl();
+                    }
+                });
+            }
+            
+            // Initialize terminal input
+            const terminalInput = document.getElementById('terminal-input');
+            if (terminalInput) {
+                terminalInput.addEventListener('focus', () => {
+                    windowManager.bringToFront('terminal');
+                });
+            }
         });
+
+        // Global function for opening apps from icons
+        window.openApp = openApp;
+        window.closeWindow = closeWindow;
+        window.minimizeWindow = minimizeWindow;
+        window.toggleMaximize = toggleMaximize;
+        window.toggleStartMenu = toggleStartMenu;
+        window.startDrag = startDrag;
+        window.shutdown = shutdown;
+        window.showNotification = showNotification;
+
+        // Make components available globally for debugging
+        window.fileExplorer = fileExplorer;
+        window.browser = browser;
+        window.winampPlayer = winampPlayer;
+        window.terminal = terminal;
+        window.windowManager = windowManager;
+        window.notificationSystem = notificationSystem;
     </script>
 </body>
 </html>
