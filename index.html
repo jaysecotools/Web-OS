@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebOS v0.1</title>
+    <title>WebOS v0.2 - Now with Winamp!</title>
     <style>
         /* === OS STYLING === */
         * {
@@ -112,13 +112,6 @@
             transform: translateY(-5px);
         }
 
-        .icon img {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
-        }
-
         .icon span {
             display: block;
             font-size: 12px;
@@ -180,6 +173,194 @@
             padding: 20px;
             height: calc(100% - 50px);
             overflow: auto;
+        }
+
+        /* === WINAMP PLAYER (RETRO STYLE) === */
+        .winamp-player {
+            width: 275px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 2px solid #444;
+            border-radius: 5px;
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            color: #ccc;
+            user-select: none;
+        }
+
+        .winamp-titlebar {
+            background: linear-gradient(to bottom, #000066, #000033);
+            color: #00ff00;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+            font-family: 'Fixedsys', monospace;
+        }
+
+        .winamp-controls {
+            padding: 10px;
+            background: #222;
+        }
+
+        .winamp-display {
+            background: #000;
+            color: #0f0;
+            font-family: 'Fixedsys', monospace;
+            padding: 5px 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border: 1px solid #333;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .winamp-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .winamp-button {
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 3px;
+            color: #ccc;
+            padding: 5px;
+            font-size: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .winamp-button:hover {
+            background: #444;
+            border-color: #666;
+        }
+
+        .winamp-button.active {
+            background: #006600;
+            color: #0f0;
+        }
+
+        .winamp-eq {
+            background: #111;
+            padding: 10px;
+            border-radius: 3px;
+            margin-top: 10px;
+        }
+
+        .eq-sliders {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .eq-slider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .eq-label {
+            font-size: 9px;
+            margin-bottom: 3px;
+        }
+
+        .eq-bar {
+            width: 15px;
+            height: 60px;
+            background: #222;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eq-level {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to top, #00aa00, #00ff00);
+            transition: height 0.3s;
+        }
+
+        .winamp-playlist {
+            background: #111;
+            margin-top: 10px;
+            border-radius: 3px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .playlist-item {
+            padding: 5px 10px;
+            border-bottom: 1px solid #222;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .playlist-item:hover {
+            background: #222;
+        }
+
+        .playlist-item.playing {
+            background: #003300;
+            color: #0f0;
+        }
+
+        .visualizer {
+            height: 30px;
+            background: #000;
+            margin-top: 10px;
+            border-radius: 3px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 5px;
+        }
+
+        .v-bar {
+            width: 3px;
+            background: #0f0;
+            border-radius: 1px;
+            transition: height 0.1s;
+        }
+
+        /* === PRIVATE BROWSER === */
+        .private-badge {
+            background: #ff4444;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+
+        .incognito-frame {
+            filter: sepia(0.3) brightness(0.9);
+        }
+
+        .history-warning {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .burn-button {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
         }
 
         /* === FILE EXPLORER === */
@@ -316,13 +497,17 @@
                 <span>🌐</span>
                 <span>Web Browser</span>
             </div>
+            <div class="icon" onclick="openApp('private-browser')">
+                <span>🕵️</span>
+                <span>Private Browser</span>
+            </div>
+            <div class="icon" onclick="openApp('winamp')">
+                <span>🎵</span>
+                <span>Winamp</span>
+            </div>
             <div class="icon" onclick="openApp('terminal')">
                 <span>💻</span>
                 <span>Terminal</span>
-            </div>
-            <div class="icon" onclick="openApp('settings')">
-                <span>⚙️</span>
-                <span>Settings</span>
             </div>
         </div>
     </div>
@@ -344,6 +529,7 @@
         </div>
     </div>
 
+    <!-- STANDARD BROWSER -->
     <div class="window" id="browser-window" style="top: 150px; left: 200px;">
         <div class="window-header">
             <div class="window-title">🌐 Web Browser</div>
@@ -356,29 +542,103 @@
         <div class="window-content">
             <div class="browser-bar">
                 <input type="text" class="url-bar" id="url-bar" value="https://en.wikipedia.org/wiki/WebOS" placeholder="Enter URL...">
-                <button class="go-btn" onclick="goToUrl()">Go</button>
+                <button class="go-btn" onclick="goToUrl('standard')">Go</button>
             </div>
             <iframe class="browser-frame" id="browser-frame" src="https://en.wikipedia.org/wiki/WebOS"></iframe>
         </div>
     </div>
 
-    <div class="window" id="terminal-window" style="top: 200px; left: 300px;">
+    <!-- PRIVATE BROWSER -->
+    <div class="window" id="private-browser-window" style="top: 200px; left: 300px;">
         <div class="window-header">
-            <div class="window-title">💻 Terminal</div>
+            <div class="window-title">🕵️ Private Browser <span class="private-badge">INCognito</span></div>
             <div class="window-controls">
-                <div class="window-btn minimize" onclick="minimizeWindow('terminal')"></div>
-                <div class="window-btn maximize" onclick="maximizeWindow('terminal')"></div>
-                <div class="window-btn close" onclick="closeWindow('terminal')"></div>
+                <div class="window-btn minimize" onclick="minimizeWindow('private-browser')"></div>
+                <div class="window-btn maximize" onclick="maximizeWindow('private-browser')"></div>
+                <div class="window-btn close" onclick="closeWindow('private-browser')"></div>
             </div>
         </div>
         <div class="window-content">
-            <div id="terminal-output">
-                <p>Welcome to WebOS Terminal v0.1</p>
-                <p>Type 'help' for commands</p>
-                <br>
-                <p>> <span id="command-line"></span></p>
+            <div class="history-warning">
+                ⚠️ <strong>Private Browsing</strong><br>
+                • No history saved<br>
+                • Cookies cleared on exit<br>
+                • LocalStorage not persisted<br>
+                • Tracks covered with ninja skills
             </div>
-            <input type="text" id="terminal-input" placeholder="Type command...">
+            <div class="browser-bar">
+                <input type="text" class="url-bar" id="private-url-bar" value="https://duckduckgo.com" placeholder="Search privately...">
+                <button class="go-btn" onclick="goToUrl('private')">Go</button>
+                <button class="burn-button" onclick="clearPrivateData()">🔥 Burn Data</button>
+            </div>
+            <iframe class="browser-frame incognito-frame" id="private-browser-frame" src="https://duckduckgo.com"></iframe>
+        </div>
+    </div>
+
+    <!-- WINAMP PLAYER -->
+    <div class="window" id="winamp-window" style="top: 250px; left: 400px; width: 300px;">
+        <div class="window-header">
+            <div class="window-title">🎵 Winamp 2.95</div>
+            <div class="window-controls">
+                <div class="window-btn minimize" onclick="minimizeWindow('winamp')"></div>
+                <div class="window-btn maximize" onclick="maximizeWindow('winamp')"></div>
+                <div class="window-btn close" onclick="closeWindow('winamp')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="winamp-player" id="winamp-player">
+                <div class="winamp-titlebar">
+                    <span>Winamp 2.95</span>
+                    <span>00:00</span>
+                </div>
+                
+                <div class="winamp-controls">
+                    <div class="winamp-display" id="winamp-display">
+                        WebOS Radio - Playing: Never Gonna Give You Up
+                    </div>
+                    
+                    <div class="winamp-buttons">
+                        <div class="winamp-button" onclick="winampControl('prev')">◀◀</div>
+                        <div class="winamp-button" onclick="winampControl('play')" id="play-btn">▶</div>
+                        <div class="winamp-button" onclick="winampControl('pause')">❚❚</div>
+                        <div class="winamp-button" onclick="winampControl('stop')">■</div>
+                        <div class="winamp-button" onclick="winampControl('next')">▶▶</div>
+                    </div>
+                    
+                    <div class="winamp-eq">
+                        <div class="eq-sliders">
+                            <div class="eq-slider">
+                                <div class="eq-label">60Hz</div>
+                                <div class="eq-bar"><div class="eq-level" id="eq1" style="height: 40%;"></div></div>
+                            </div>
+                            <div class="eq-slider">
+                                <div class="eq-label">310Hz</div>
+                                <div class="eq-bar"><div class="eq-level" id="eq2" style="height: 60%;"></div></div>
+                            </div>
+                            <div class="eq-slider">
+                                <div class="eq-label">1kHz</div>
+                                <div class="eq-bar"><div class="eq-level" id="eq3" style="height: 80%;"></div></div>
+                            </div>
+                            <div class="eq-slider">
+                                <div class="eq-label">3kHz</div>
+                                <div class="eq-bar"><div class="eq-level" id="eq4" style="height: 70%;"></div></div>
+                            </div>
+                            <div class="eq-slider">
+                                <div class="eq-label">12kHz</div>
+                                <div class="eq-bar"><div class="eq-level" id="eq5" style="height: 50%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="visualizer" id="visualizer">
+                        <!-- Visualizer bars will be generated here -->
+                    </div>
+                    
+                    <div class="winamp-playlist" id="winamp-playlist">
+                        <!-- Playlist will be generated here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -388,7 +648,8 @@
         <div class="taskbar-apps">
             <div class="taskbar-app" onclick="openApp('files')">📁 Files</div>
             <div class="taskbar-app" onclick="openApp('browser')">🌐 Browser</div>
-            <div class="taskbar-app" onclick="openApp('terminal')">💻 Terminal</div>
+            <div class="taskbar-app" onclick="openApp('private-browser')">🕵️ Private</div>
+            <div class="taskbar-app" onclick="openApp('winamp')">🎵 Winamp</div>
         </div>
         <div class="clock" id="clock">--:--:--</div>
     </div>
@@ -396,8 +657,8 @@
     <!-- START MENU -->
     <div class="start-menu" id="start-menu">
         <div class="start-menu-header">
-            <h3>WebOS v0.1</h3>
-            <p>Welcome to your custom OS!</p>
+            <h3>WebOS v0.2</h3>
+            <p>Now with Winamp & Private Browsing!</p>
         </div>
         <div class="start-menu-items">
             <div class="start-item" onclick="openApp('files')">
@@ -414,11 +675,18 @@
                     <p>Browse the internet</p>
                 </div>
             </div>
-            <div class="start-item" onclick="showNotification('System', 'Settings will be available soon!')">
-                <span>⚙️</span>
+            <div class="start-item" onclick="openApp('private-browser')">
+                <span>🕵️</span>
                 <div>
-                    <strong>Settings</strong>
-                    <p>System configuration</p>
+                    <strong>Private Browser</strong>
+                    <p>Browse incognito</p>
+                </div>
+            </div>
+            <div class="start-item" onclick="openApp('winamp')">
+                <span>🎵</span>
+                <div>
+                    <strong>Winamp Player</strong>
+                    <p>It really whips the llama's ass!</p>
                 </div>
             </div>
             <div class="start-item" onclick="shutdown()">
@@ -437,13 +705,20 @@
         <p id="notif-message">This is a notification</p>
     </div>
 
+    <!-- AUDIO ELEMENT (HIDDEN) -->
+    <audio id="winamp-audio" preload="metadata">
+        <!-- We'll use YouTube embeds or sample audio -->
+    </audio>
+
     <script>
         // === OS CORE ===
         const WebOS = {
-            version: '0.1.0',
+            version: '0.2.0',
             apps: {
                 files: { open: false, minimized: false },
                 browser: { open: false, minimized: false },
+                'private-browser': { open: false, minimized: false },
+                winamp: { open: false, minimized: false },
                 terminal: { open: false, minimized: false }
             },
             files: [
@@ -453,22 +728,193 @@
                 { name: 'notes.txt', type: 'file', icon: '📝' },
                 { name: 'todo.html', type: 'file', icon: '📄' },
                 { name: 'screenshot.png', type: 'file', icon: '🖼️' }
-            ]
+            ],
+            privateMode: false,
+            history: []
         };
 
-        // === CLOCK ===
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString();
-            const date = now.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-            document.getElementById('clock').textContent = `${date} ${time}`;
+        // === WINAMP PLAYER ===
+        const Winamp = {
+            isPlaying: false,
+            currentTrack: 0,
+            volume: 80,
+            playlist: [
+                { title: "Never Gonna Give You Up", artist: "Rick Astley", duration: "3:32", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+                { title: "Blue Monday", artist: "New Order", duration: "4:09", url: "https://www.youtube.com/embed/FYH8DsU2WCk" },
+                { title: "Sweet Dreams", artist: "Eurythmics", duration: "3:36", url: "https://www.youtube.com/embed/qeMFqkcPYcg" },
+                { title: "Take On Me", artist: "A-ha", duration: "3:48", url: "https://www.youtube.com/embed/djV11Xbc914" },
+                { title: "Africa", artist: "TOTO", duration: "4:22", url: "https://www.youtube.com/embed/FTQbiNvZqaY" },
+                { title: "Video Killed Radio", artist: "The Buggles", duration: "4:13", url: "https://www.youtube.com/embed/W8r-tXRLazs" }
+            ],
+            init() {
+                this.updatePlaylist();
+                this.createVisualizer();
+                this.updateEQ();
+                this.updateDisplay();
+            },
+            updatePlaylist() {
+                const playlist = document.getElementById('winamp-playlist');
+                playlist.innerHTML = '';
+                
+                this.playlist.forEach((track, index) => {
+                    const item = document.createElement('div');
+                    item.className = `playlist-item ${index === this.currentTrack ? 'playing' : ''}`;
+                    item.innerHTML = `
+                        <div>${index + 1}. ${track.title}</div>
+                        <small>${track.artist} - ${track.duration}</small>
+                    `;
+                    item.onclick = () => {
+                        this.currentTrack = index;
+                        this.play();
+                        this.updatePlaylist();
+                    };
+                    playlist.appendChild(item);
+                });
+            },
+            createVisualizer() {
+                const viz = document.getElementById('visualizer');
+                viz.innerHTML = '';
+                for (let i = 0; i < 32; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = 'v-bar';
+                    bar.style.height = `${Math.random() * 100}%`;
+                    viz.appendChild(bar);
+                }
+                
+                // Animate visualizer if playing
+                setInterval(() => {
+                    if (!this.isPlaying) return;
+                    
+                    const bars = document.querySelectorAll('.v-bar');
+                    bars.forEach(bar => {
+                        const newHeight = Math.random() * 100;
+                        bar.style.height = `${newHeight}%`;
+                        bar.style.background = `hsl(${120 + newHeight * 0.5}, 100%, 50%)`;
+                    });
+                }, 100);
+            },
+            updateEQ() {
+                // Random EQ movement
+                setInterval(() => {
+                    for (let i = 1; i <= 5; i++) {
+                        const eq = document.getElementById(`eq${i}`);
+                        const current = parseInt(eq.style.height) || 50;
+                        const change = (Math.random() - 0.5) * 20;
+                        const newHeight = Math.max(10, Math.min(100, current + change));
+                        eq.style.height = `${newHeight}%`;
+                    }
+                }, 300);
+            },
+            updateDisplay() {
+                const track = this.playlist[this.currentTrack];
+                const display = document.getElementById('winamp-display');
+                const status = this.isPlaying ? '▶ Playing:' : '⏸ Paused:';
+                display.textContent = `${status} ${track.title} - ${track.artist}`;
+            },
+            play() {
+                this.isPlaying = true;
+                document.getElementById('play-btn').textContent = '❚❚';
+                this.updateDisplay();
+                showNotification('Winamp', `Playing: ${this.playlist[this.currentTrack].title}`);
+                
+                // In a real version, you'd play actual audio here
+                // For now, we'll just show a YouTube embed
+                if (this.playlist[this.currentTrack].url) {
+                    // Could embed YouTube player here
+                }
+            },
+            pause() {
+                this.isPlaying = false;
+                document.getElementById('play-btn').textContent = '▶';
+                this.updateDisplay();
+            },
+            stop() {
+                this.isPlaying = false;
+                document.getElementById('play-btn').textContent = '▶';
+                this.updateDisplay();
+            },
+            next() {
+                this.currentTrack = (this.currentTrack + 1) % this.playlist.length;
+                if (this.isPlaying) this.play();
+                this.updatePlaylist();
+            },
+            prev() {
+                this.currentTrack = this.currentTrack === 0 ? this.playlist.length - 1 : this.currentTrack - 1;
+                if (this.isPlaying) this.play();
+                this.updatePlaylist();
+            }
+        };
+
+        function winampControl(action) {
+            switch(action) {
+                case 'play': Winamp.play(); break;
+                case 'pause': Winamp.pause(); break;
+                case 'stop': Winamp.stop(); break;
+                case 'next': Winamp.next(); break;
+                case 'prev': Winamp.prev(); break;
+            }
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+
+        // === PRIVATE BROWSER ===
+        function goToUrl(mode = 'standard') {
+            let url, frame;
+            
+            if (mode === 'private') {
+                url = document.getElementById('private-url-bar').value;
+                frame = document.getElementById('private-browser-frame');
+                WebOS.privateMode = true;
+                
+                // Don't save history in private mode
+                if (!url.startsWith('http')) {
+                    url = 'https://' + url;
+                    document.getElementById('private-url-bar').value = url;
+                }
+                
+                showNotification('Private Browser', 'Browsing incognito - no history saved');
+            } else {
+                url = document.getElementById('url-bar').value;
+                frame = document.getElementById('browser-frame');
+                WebOS.privateMode = false;
+                
+                // Save to history
+                if (url && !url.startsWith('http')) {
+                    url = 'https://' + url;
+                    document.getElementById('url-bar').value = url;
+                }
+                
+                WebOS.history.push({ url, timestamp: new Date() });
+            }
+            
+            try {
+                frame.src = url;
+            } catch (e) {
+                showNotification('Browser Error', 'Cannot navigate to that URL');
+            }
+        }
+
+        function clearPrivateData() {
+            const frame = document.getElementById('private-browser-frame');
+            frame.src = 'about:blank';
+            document.getElementById('private-url-bar').value = 'https://duckduckgo.com';
+            
+            // Clear any stored data
+            localStorage.removeItem('privateData');
+            sessionStorage.clear();
+            
+            // Fun animation
+            const warning = document.querySelector('.history-warning');
+            warning.innerHTML = '🔥 DATA BURNED! 🔥<br>All traces eliminated. You are a ghost.';
+            warning.style.background = 'rgba(255, 100, 100, 0.3)';
+            warning.style.borderColor = '#ff4444';
+            
+            setTimeout(() => {
+                warning.innerHTML = '⚠️ <strong>Private Browsing</strong><br>• No history saved<br>• Cookies cleared on exit<br>• LocalStorage not persisted<br>• Tracks covered with ninja skills';
+                warning.style.background = '';
+                warning.style.borderColor = '';
+            }, 2000);
+            
+            showNotification('Private Browser', 'All browsing data cleared!');
+        }
 
         // === APP MANAGEMENT ===
         function openApp(appName) {
@@ -488,7 +934,7 @@
             
             // Special initialization
             if (appName === 'files') initFileExplorer();
-            if (appName === 'terminal') initTerminal();
+            if (appName === 'winamp') Winamp.init();
             
             showNotification('WebOS', `${appName.charAt(0).toUpperCase() + appName.slice(1)} launched`);
         }
@@ -497,6 +943,11 @@
             const window = document.getElementById(`${appName}-window`);
             window.classList.remove('active');
             WebOS.apps[appName].open = false;
+            
+            // Clear private browser data on close
+            if (appName === 'private-browser') {
+                clearPrivateData();
+            }
         }
 
         function minimizeWindow(appName) {
@@ -533,77 +984,19 @@
             });
         }
 
-        // === BROWSER ===
-        function goToUrl() {
-            const url = document.getElementById('url-bar').value;
-            const frame = document.getElementById('browser-frame');
-            
-            // Basic URL validation
-            let finalUrl = url;
-            if (!url.startsWith('http')) {
-                finalUrl = 'https://' + url;
-                document.getElementById('url-bar').value = finalUrl;
-            }
-            
-            try {
-                frame.src = finalUrl;
-            } catch (e) {
-                showNotification('Browser Error', 'Cannot navigate to that URL');
-            }
+        // === CLOCK ===
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString();
+            const date = now.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            document.getElementById('clock').textContent = `${date} ${time}`;
         }
-
-        // === TERMINAL ===
-        function initTerminal() {
-            const input = document.getElementById('terminal-input');
-            input.focus();
-            
-            input.onkeypress = (e) => {
-                if (e.key === 'Enter') {
-                    const command = input.value.trim();
-                    input.value = '';
-                    processCommand(command);
-                }
-            };
-        }
-
-        function processCommand(command) {
-            const output = document.getElementById('terminal-output');
-            const newLine = document.createElement('p');
-            newLine.innerHTML = `> ${command}`;
-            output.appendChild(newLine);
-            
-            // Commands
-            switch(command.toLowerCase()) {
-                case 'help':
-                    output.innerHTML += `
-                        <p>Available commands:</p>
-                        <p>• help - Show this help</p>
-                        <p>• date - Show current date</p>
-                        <p>• clear - Clear terminal</p>
-                        <p>• about - About WebOS</p>
-                        <p>• reboot - Restart the OS (fake)</p>
-                    `;
-                    break;
-                case 'date':
-                    output.innerHTML += `<p>${new Date().toString()}</p>`;
-                    break;
-                case 'clear':
-                    output.innerHTML = '';
-                    break;
-                case 'about':
-                    output.innerHTML += `<p>WebOS v${WebOS.version} - A fun web-based OS simulator</p>`;
-                    break;
-                case 'reboot':
-                    output.innerHTML += `<p>Rebooting... Just kidding! 😄</p>`;
-                    showNotification('System', 'Pretend reboot initiated!');
-                    break;
-                default:
-                    output.innerHTML += `<p>Command not found: ${command}</p>`;
-            }
-            
-            // Scroll to bottom
-            output.scrollTop = output.scrollHeight;
-        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
         // === START MENU ===
         function toggleStartMenu() {
@@ -642,18 +1035,17 @@
                     font-family: monospace;
                     flex-direction: column;
                 ">
-                    <h1 style="color: #4cc9f0;">WebOS</h1>
-                    <p>System is now safe to turn off</p>
+                    <h1 style="color: #4cc9f0;">WebOS v0.2</h1>
+                    <p>Featuring Winamp & Private Browsing!</p>
                     <p><button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4cc9f0; border: none; border-radius: 5px; color: white; cursor: pointer;">Restart</button></p>
                 </div>
             `;
         }
 
-        // === DRAG & DROP (Basic) ===
+        // === INITIALIZE ===
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize
             initFileExplorer();
-            showNotification('WebOS', 'System ready! Welcome to your custom OS.');
+            showNotification('WebOS v0.2', 'Now with Winamp & Private Browsing!');
             
             // Close start menu when clicking outside
             document.addEventListener('click', (e) => {
